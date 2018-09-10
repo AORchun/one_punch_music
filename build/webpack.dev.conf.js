@@ -9,6 +9,51 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const axios = require('axios');
+
+const express = require('express');
+const app = express();
+
+const header = {
+  origin: ' https://y.qq.com',
+  referer: "https://y.qq.com/m/index.html"
+}
+const params = {
+  g_tk: 5381,
+  uin: 0,
+  format: 'json',
+  inCharset: 'utf-8',
+  outCharset: 'utf-8',
+  notice: 0,
+  platform: 'h5',
+  needNewCode: 1
+}
+app.all('*', function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true)
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "X-Requested-With")
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+  res.header("X-Powered-By", ' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8")
+  next()
+})
+app.get("/", function (req, res) {
+  console.log('server 3000 has been visited')
+  axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', { header, params }).then(function (response) { 
+    res.send(response.data.data);
+    console.log(response.data.data)
+  }).catch(function (error) {
+    console.log(error);
+    console.log('server 3000 get some errors')
+   })
+})
+
+const server = app.listen(3000, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log(host, port)
+})
+
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -85,8 +130,8 @@ module.exports = new Promise((resolve, reject) => {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
+          ? utils.createNotifierCallback()
+          : undefined
       }))
 
       resolve(devWebpackConfig)
