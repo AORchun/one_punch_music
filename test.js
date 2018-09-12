@@ -25,7 +25,6 @@ header={
 
 route.get('/',function(req,res){
   axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', { header, params }).then(function (data) {
-    console.log(data.data.data)
     res.json(data.data.data)
   }).catch(function(err){
     console.log(err)
