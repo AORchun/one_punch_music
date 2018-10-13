@@ -38,20 +38,66 @@ app.all('*', function (req, res, next) {
   next()
 })
 app.get("/", function (req, res) {
-  console.log('server 3000 has been visited')
-  axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', { header, params }).then(function (response) { 
+  // console.log('server 3000 has been visited')
+  axios.get('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', { header, params }).then(function (response) {
     res.send(response.data.data);
-    console.log(response.data.data)
+    // console.log(response.data.data)
   }).catch(function (error) {
-    console.log(error);
-    console.log('server 3000 get some errors')
-   })
+    res.send(error);
+    // console.log('server 3000 get some errors')
+  })
 })
+//获取巅峰榜和全球排行榜
+const params2 = {
+  page: "index",
+  format: "html",
+  tpl: "macv4",
+  v8debug: 1,
+  jsonCallback: "jsonCallback"
+}
 
+app.get("/getRankList", function (req, res) {
+  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_opt.fcg', { header, params: params2}).then(function (response) {
+    var resulte = response.data;
+    function jsonCallback(obj) {
+      res.send(obj)
+    };
+    eval(resulte);
+  }).catch(function (error) {
+    res.send(error)
+  })
+})
+//获取歌手列表
+const paramsSingerList = {
+  callback: "getUCGI7220199335448163",
+  g_tk: 5381,
+  jsonpCallback: "getUCGI7220199335448163",
+  loginUin: 0,
+  hostUin: 0,
+  format: "jsonp",
+  inCharset: "utf8",
+  outCharset: "utf-8",
+  notice: 0,
+  platform: "yqq",
+  needNewCode: 0,
+  data: { "comm": { "ct": 24, "cv": 10000 }, "singerList": { "module": "Music.SingerListServer", "method": "get_singer_list", "param": { "area": -100, "sex": -100, "genre": -100, "index": -100, "sin": 0, "cur_page": 1 } } }
+}
+app.get('/getSingerList', function (req, res) {
+  axios.get("https://u.y.qq.com/cgi-bin/musicu.fcg", { header, params: paramsSingerList })
+    .then(function (response) {
+      var resulte = response.data;
+      function getUCGI7220199335448163(str) { 
+        res.send(str.singerList.data.singerlist)
+      }
+      eval(resulte)
+    }).catch(function (error) {
+      res.send(error);
+    })
+})
 const server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;
-  console.log(host, port)
+  console.log(host, port);
 })
 
 
