@@ -70,7 +70,7 @@ export default {
       .then(function(response) {
         that.arr = response.data;
         that.swiperSlides = response.data.slider;
-        console.log(that.arr);
+        // console.log(that.arr);
       })
       .catch(function(error) {
         console.log(error);
