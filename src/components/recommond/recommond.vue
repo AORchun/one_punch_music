@@ -47,8 +47,6 @@ export default {
   props: {},
   data() {
     return {
-      arr: [],
-      swiperSlides: [],
       swiperOption: {
         direction: "horizontal",
         pagination: {
@@ -62,19 +60,26 @@ export default {
     swiperSlide,
     copyRight
   },
+  computed:{
+    arr(){
+      return this.$store.state.arr
+    },
+    swiperSlides(){
+      return this.$store.state.swiperSlides
+    }
+  },
   created() {
-    var that = this;
-
-    axios
-      .get("http://localhost:3000/")
-      .then(function(response) {
-        that.arr = response.data;
-        that.swiperSlides = response.data.slider;
-        // console.log(that.arr);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+   this.$store.dispatch('getRecommondPageInfo')
+    console.log("created "+new Date())
+  },
+  beforeCreate(){
+    console.log("beforeCreate "+new Date())
+  },
+  beforeMount(){
+    console.log('beforeMount '+new Date())
+  },
+  mounted(){
+    console.log('moumted '+new Date())
   },
   methods: {}
 };

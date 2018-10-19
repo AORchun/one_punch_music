@@ -33,14 +33,27 @@
       height:50px;
       margin-right:20px;
     }
-    .alertInfo p{
+    .alertInfo .pl{
       font-size:18px;
       color:#666;
-      text-align: center;
       margin-bottom:50px;
+      line-height:30px;
+      padding-left:40%;
     }
-    .alertInfo span{
+    .alertInfo .pl span{
+      display:inline-block;
       margin-right:5px;
+      width:100px;
+      height:30px;
+      text-align:justify;
+      vertical-align:middle;
+    }
+    .alertInfo .pl span::after{
+      content:'';
+      display:inline-block;
+      width:100%;
+      height:0;
+      overflow:hidden;
     }
     .warningInfo{
       position: absolute;
@@ -53,14 +66,18 @@
       color:#666;
       margin:auto;
     }
+    .alertInfo .cancel{
+      color:#000;
+      text-align:center;
+    }
   </style>
 </head>
 
 <body>
     <div class='alertInfo'>
       <h2><img src="successExchange@2x.png" alt="">已成功通知卖家收款！</h2>
-      <p>卖家确认收款后，您购买的USDT将从OTC平台释放到您充值的商家平台！</p>
-      <h2><span></span>S 后自动返回商户</h2>
+      <p class='pl'> <span>交易金额</span>：12.34CNY<br/><span>账号</span>：123546@11.com</p>     
+      <p class='cancel'>已取消订单。</p>
     </div>
     <div class='warningInfo'>
         <p>交易须知：</p> 
@@ -71,7 +88,7 @@
         <p>5、卖家收到转账后您购买的USDT将从OTC平台释放到您充值的商家平台</p> 
     </div>
 </body>
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
 <script>
   var n=6;
   function timer(){
@@ -84,6 +101,6 @@
     $('.alertInfo span').text(n);
     setTimeout(timer,1000)
   }
-  timer();
+  // timer();
 </script>
 </html>

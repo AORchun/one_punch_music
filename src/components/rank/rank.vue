@@ -32,13 +32,9 @@ export default {
       hotGlobalList:[]
   }},
   created: function() {
+    this.$store.dispatch('getSingerList')
     var that=this
-    axios.get('http://localhost:3000/getRankList').then(function(response){
-      that.hotLocalList=response.data[0].List;
-      that.hotGlobalList=response.data[1].List;
-    }).catch(function(){
-      console.log(error)
-    })
+    
   },
   methods:{
 

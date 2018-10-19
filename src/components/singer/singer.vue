@@ -2,16 +2,16 @@
   <div class="containBox">
     <div class='scroll-wrapper' ref='wrapper'>
       <ul>
-        <li class='singerItems' v-for='(item,index) in singerList' :key='index'>
+        <li class='singerItems' :class='getKey(item)' v-for='(item,index) in singerList' :key='index'>
           <div class='itemsTop' :class='{activedLetter:getKey(item)==activeLetter}' v-text='getKey(item)'></div>
           <div class='item' v-for='(singer,i) in item[getKey(item)]' :key='i'><img :src="singer.singer_pic" alt="LOL!"><span>{{singer.singer_name}}</span></div>
         </li>
       </ul>
-        
+      <div class='posabsTop'>{{activeLetter}}</div>
     </div>
     
     <ul class='sideNavBar'>
-      <li v-for="(item,index) in singerList" :key="index" :class='{selectedAlph:index==activeNum}' @mouseover='changeColor(index,getKey(item))'>{{getKey(item)}}</li>
+      <li v-for="(item,index) in singerList" :key="index" :class='{selectedAlph:index==activeNum}' @click='changeColor(index,getKey(item))'>{{getKey(item)}}</li>
     </ul>
   </div>
 </template>
@@ -28,15 +28,21 @@ export default {
       activeNum: 0,
       activeLetter: "A",
       singerList: [],
-      scroll:null
+      scroll: null,
+      scrollInterval:[0],
     };
   },
   methods: {
     changeColor: function(index, item) {
       this.activeNum = index;
       this.activeLetter = item;
-      console.log(document.getElementsByClassName('.singerItems')[index]);
-      this.scroll.scrollToElement(document.getElementsByClassName('singerItems')[index],500,false,false)
+      console.log(document.getElementsByClassName(".singerItems")[index]);
+      this.scroll.scrollToElement(
+        document.getElementsByClassName("singerItems")[index],
+        500,
+        false,
+        false
+      );
     },
     getKey: function(item) {
       var key;
@@ -59,14 +65,39 @@ export default {
       });
   },
   mounted: function() {
+     var that=this
     this.$nextTick(() => {
-        this.scroll = new Bscroll(this.$refs.wrapper, {
+      that.scroll = new Bscroll(this.$refs.wrapper, {
+        scrollY: true,
+        click: true,
+        probeType: 3
+      });
+      setTimeout(function(){
+        var arr=[0];
+        var init=0;
+        var arr1=document.getElementsByClassName('singerItems');
+        var len=arr1.length;
+        console.log(len);
+        console.log(arr1);
+        for(var i=0;i<len;i++){
+          init+=arr1[i].offsetHeight;
+          arr.push(init);
+        }
+        that.scroll.on("scroll", function(pos) {
+        var activeIndex;
+        var posy=pos.y>0?0:-1*pos.y
+        console.log(posy)
+        for(var j=0;j<arr.length;j++){
+          if(posy>=arr[j]){
+            activeIndex=j
+          }
+        }
+        that.activeNum=activeIndex;
+        that.activeLetter=that.getKey(that.singerList[activeIndex])
+      });
 
-        })
-        this.scroll.on('scroll',function(pos){
-          console.log(pos)
-        })
-      })
+      },100)
+    });
   }
 };
 </script>
@@ -76,9 +107,21 @@ export default {
 
 .containBox 
   position: relative;
-  .scroll-wrapper
+
+  .scroll-wrapper 
     height: calc(100vh - 130px);
     overflow: auto;
+    .posabsTop
+      height:32px;
+      padding-left: 32px;
+      line-height: 32px;
+      color: #fff;
+      font-size: 16px;
+      background: $color-highlight-background;
+      position:absolute
+      left:0
+      top:0
+      width:100%
     .singerItems .itemsTop 
       padding-left: 32px;
       height: 32px;
@@ -86,10 +129,11 @@ export default {
       color: #666;
       font-size: 16px;
       background: $color-highlight-background;
-    .singerItems .activedLetter 
+    .singerItems .activedLetter
       color: #fff;
     .singerItems .item:last-child 
       border-bottom: none;
+    
     .item 
       background: rgba(255, 255, 255, 0.15);
       color: $color-text-d;
@@ -105,20 +149,21 @@ export default {
         margin-right: 20px;
         font-size: 16px;
   .sideNavBar 
-      position: fixed;
-      top: 110px;
-      right: 30px;
-      width: 10px;
-      li 
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        color: #7e8c8d;
-        background: $color-background;
-        text-align: center;
-        line-height: 20px;
-        margin-bottom: 5px;
-      .selectedAlph 
-        background: $color-highlight-background;
-        color: $color-theme;
+    position: fixed;
+    top: 110px;
+    right: 30px;
+    width: 10px;
+    li
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      color: #7e8c8d;
+      background: $color-background;
+      text-align: center;
+      line-height: 20px;
+      margin-bottom: 5px;
+    .selectedAlph
+      background: $color-highlight-background;
+      color: $color-theme;
+    
 </style>
