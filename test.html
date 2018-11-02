@@ -2,105 +2,53 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    *{
-      margin:0px;
-      padding:0;
-    }
-    body{
-      background:#fff;
-      height:100vh;
-      position: relative;
-    }
-    .alertInfo{
-      padding-top:100px;
-    }
-    .alertInfo h2{
-      display:flex;
-      justify-content: center;
-      align-items: center;
-      color:#000;
-      font-size:20px;
-      margin-bottom:20px;
-      font-weight:400;
-    }
-    .alertInfo img{
-      width:50px;
-      height:50px;
-      margin-right:20px;
-    }
-    .alertInfo .pl{
-      font-size:18px;
-      color:#666;
-      margin-bottom:50px;
-      line-height:30px;
-      padding-left:40%;
-    }
-    .alertInfo .pl span{
-      display:inline-block;
-      margin-right:5px;
-      width:100px;
-      height:30px;
-      text-align:justify;
-      vertical-align:middle;
-    }
-    .alertInfo .pl span::after{
-      content:'';
-      display:inline-block;
-      width:100%;
-      height:0;
-      overflow:hidden;
-    }
-    .warningInfo{
-      position: absolute;
-      bottom:0;
-    }
-    .warningInfo p{
-      width:80%;
-      line-height:25px;
-      font-size:14px;
-      color:#666;
-      margin:auto;
-    }
-    .alertInfo .cancel{
-      color:#000;
-      text-align:center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .outer {
+            width: 200px;
+            height: 400px;
+            overflow: hidden;
+            margin: auto;
+            border: 1px solid red;
+        }
+
+        .inner {
+            width: 200px;
+            height: 200px;
+            border: 1px solid blue;
+            margin: auto;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
 </head>
 
 <body>
-    <div class='alertInfo'>
-      <h2><img src="successExchange@2x.png" alt="">已成功通知卖家收款！</h2>
-      <p class='pl'> <span>交易金额</span>：12.34CNY<br/><span>账号</span>：123546@11.com</p>     
-      <p class='cancel'>已取消订单。</p>
+    <div class="outer">
+        <div class='inner'>
+            <img src="successExchange@2x.png" alt="LOL!">
+        </div>
     </div>
-    <div class='warningInfo'>
-        <p>交易须知：</p> 
-        <p>1、每次支付随机匹配的卖家不同，同一个卖家所使用的银行卡也可能不同，请按照每次所显示的付款信息打款，请勿直接打款到之前充值过的卡号，否则可能无法到账，造成的损失平台概不负责。</p> 
-        <p>2、转账时请勿填写包括数字货币、USDT、充值、美金、外汇等字样。否则可能导致卖家账户和您的账户被冻结，造成的损失平台概不负责。</p> 
-        <p>3、重要提示：作为独立公正的数字货币撮合平台，坚决反对任何机构和个人利用平台从事不符合法律的商业行为。如果您对交易有疑问，或有任何的投诉或建议，请email联系官方客服：
-        <p>4、根据国家相关法律规定，购买数字货币仅支持自然人之间的点对点转账交易</p> 
-        <p>5、卖家收到转账后您购买的USDT将从OTC平台释放到您充值的商家平台</p> 
-    </div>
+    <input type="text">
 </body>
-<script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
 <script>
-  var n=6;
-  function timer(){
-    n--;
-    
-    if(n<0){
-      window.history.back();
-      return
-    }
-    $('.alertInfo span').text(n);
-    setTimeout(timer,1000)
-  }
-  // timer();
+    $('input').keypress(function(event){
+        var keycode=event.keyCode?event.keyCode:event.which
+        console.log(keycode);
+    })
 </script>
 </html>

@@ -6,7 +6,7 @@
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
-        <li v-for='(song,index) in item.songlist' :key='song.singerid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
+        <li v-for='(song,index) in item.songlist' :key='song.singerid' v-if='index<3' @click='showSinglist' ><p>{{song.songname+" - "+song.singername}}</p></li>
       </ol>
     </div>
     <div class='rankHeader'>全球榜</div>
@@ -18,26 +18,41 @@
         <li v-for='(song,index) in item.songlist' :key='song.singerid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
       </ol>
     </div>
+    <songlist  v-if='isShowSongList'></songlist>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import axios from "axios";
+import songlist from 'components/songlist/songlist'
 
 export default {
   props: {},
   data() {
     return {
-      hotLocalList: [],
-      hotGlobalList:[]
+      isShowSongList:false
   }},
   created: function() {
-    this.$store.dispatch('getSingerList')
-    var that=this
-    
+    this.$store.dispatch('getRankList')
   },
   methods:{
+    showSinglist(){
+      this.isShowSongList=true
+    }
+  },
+  computed:{
+    hotLocalList(){
+      return this.$store.state.localList;
+    },
+    hotGlobalList(){
+      return this.$store.state.globalList;
+    }
+  },
+  watch:{
 
+  },
+  components:{
+    songlist
   }
 };
 </script>

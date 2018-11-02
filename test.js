@@ -92,7 +92,7 @@ app.get('/getSingerList', function (req, res) {
   axios.get("https://u.y.qq.com/cgi-bin/musicu.fcg", { header, params: paramsSingerList })
     .then(function (response) {
       var resulte = response.data;
-      function getUCGI7220199335448163(str) { 
+      function getUCGI7220199335448163(str) {
         res.send(str.singerList.data.singerlist)
       }
       eval(resulte)
@@ -100,4 +100,98 @@ app.get('/getSingerList', function (req, res) {
       res.send(error);
     })
 })
+//获取搜索热词列表
+const hotkeyparams = {
+  g_tk: 5381,
+  jsonpCallback: "hotSearchKeysmod_top_search",
+  loginUin: 0,
+  hostUin: 0,
+  format: "jsonp",
+  inCharset: "utf8",
+  outCharset: "utf-8",
+  notice: 0,
+  platform: "yqq",
+  needNewCode: 0
+}
+
+app.get('/hotkeys', function (req, res) {
+  axios.get("https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg", { header, params: hotkeyparams }).then(function (response) {
+    var result = response.data
+    function hotSearchKeysmod_top_search(data) {
+      res.send(data.data);
+    }
+    eval(result)
+  }).catch(function (error) {
+    res.send(error);
+  })
+})
+
+//即时搜索结果
+keywordparams = {
+  is_xml: 0,
+  format: "jsonp",
+  g_tk: 5381,
+  jsonpCallback: "SmartboxKeysCallbackmod_search815",
+  loginUin: 0,
+  hostUin: 0,
+  format: "jsonp",
+  inCharset: "utf8",
+  outCharset: "utf-8",
+  notice: 0,
+  platform: "yqq",
+  needNewCode: 0,
+}
+app.get('/keyword', function (req, res) {
+  var params = Object.assign({}, keywordparams, { key: req.query.key });
+  console.log(req.query.key);
+  axios.get('https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg', { header, params }).then(function (response) {
+    let result = response.data;
+    function SmartboxKeysCallbackmod_search815(data) {
+      res.send(data.data);
+    }
+    eval(result);
+  }).catch(function (error) {
+    res.send(error);
+  })
+})
+
+//获得点击后的搜索结果
+inputParams = {
+  ct: 24,
+  qqmusic_ver: 1298,
+  new_json: 1,
+  remoteplace: "txt.yqq.song",
+  searchid: 68854901381091973,
+  t: 0,
+  aggr: 1,
+  cr: 1,
+  catZhida: 1,
+  lossless: 0,
+  flag_qc: 0,
+  p: 1,
+  n: 20,
+  g_tk: 5381,
+  jsonpCallback: "MusicJsonCallback14644978969788136",
+  loginUin: 0,
+  hostUin: 0,
+  format: "jsonp",
+  inCharset: "utf8",
+  outCharset: "utf-8",
+  notice: 0,
+  platform: "yqq",
+  needNewCode: 0
+}
+app.get('/inputword', function (req, res) {
+  let params = Object.assign({}, inputParams, { w: req.query.k });
+  axios.get('https://c.y.qq.com/soso/fcgi-bin/client_search_cp', { header, params }).then(function (response) { 
+    let result = response.data;
+    function MusicJsonCallback14644978969788136(data) {
+      res.send(data)
+     }
+    eval(result)
+  }).catch(function (errror) { 
+    res.send(errror)
+  })
+})
+
 app.use('/', route)
