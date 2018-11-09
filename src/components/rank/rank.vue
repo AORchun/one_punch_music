@@ -6,7 +6,7 @@
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
-        <li v-for='(song,index) in item.songlist' :key='song.singerid' v-if='index<3' @click='showSinglist' ><p>{{song.songname+" - "+song.singername}}</p></li>
+        <li v-for='(song,index) in item.songlist' :key='song.songid' v-if='index<3' @click='showSinglist' ><p>{{song.songname+" - "+song.singername}}</p></li>
       </ol>
     </div>
     <div class='rankHeader'>全球榜</div>
@@ -15,7 +15,7 @@
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
-        <li v-for='(song,index) in item.songlist' :key='song.singerid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
+        <li v-for='(song,index) in item.songlist' :key='song.songid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
       </ol>
     </div>
     <songlist  v-if='isShowSongList'></songlist>
@@ -30,7 +30,7 @@ export default {
   props: {},
   data() {
     return {
-      isShowSongList:false
+      isShowSongList:true
   }},
   created: function() {
     this.$store.dispatch('getRankList')

@@ -1,54 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        .outer {
-            width: 200px;
-            height: 400px;
-            overflow: hidden;
-            margin: auto;
-            border: 1px solid red;
-        }
-
-        .inner {
-            width: 200px;
-            height: 200px;
-            border: 1px solid blue;
-            margin: auto;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        img {
-            width: 200px;
-            height: 200px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-        }
-    </style>
 </head>
-
 <body>
-    <div class="outer">
-        <div class='inner'>
-            <img src="successExchange@2x.png" alt="LOL!">
-        </div>
-    </div>
-    <input type="text">
+    
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-</script>
-<script>
-    $('input').keypress(function(event){
-        var keycode=event.keyCode?event.keyCode:event.which
-        console.log(keycode);
-    })
-</script>
 </html>
