@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>css3final</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: black;
+        }
+
+        .box1,
+        .box2,
+        .box3,
+        .box4,
+        .box5,
+        .box6,
+        .box7,
+        .box8,
+        .box9,
+        .box10,
+        .box11,
+        .box12,
+        .box13,
+        .box14,
+        .box15,
+        .box16,
+        .box17,
+        .box18,
+        .box19,
+        .box20,
+        .box21,
+        .box22,
+        .box23,
+        .box24,
+        .box25,
+        .box26,
+        .box27,
+        .box28,
+        .box29 {
+            width: 100px;
+            height: 100px;
+            /*border:1px solid red;*/
+            margin: 50px 50px;
+            float: left;
+        }
+
+        .box1 li,
+        .box2 li {
+            width: 5px;
+            height: 5px;
+            background: white;
+            float: left;
+            border-radius: 50%;
+            margin: 6px 5px;
+        }
+
+        .box1 ul li:nth-child(1) {
+            animation: box1Move 0.6s linear infinite;
+        }
+
+        .box1 ul li:nth-child(2) {
+            animation: box1Move 0.6s linear 0.1s infinite;
+        }
+
+        .box1 ul li:nth-child(3) {
+            animation: box1Move 0.6s linear 0.2s infinite;
+        }
+
+        @keyframes box1Move {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(3)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        .box2 ul li:nth-child(1) {
+            animation: box1Move 0.6s linear infinite;
+        }
+
+        .box2 ul li:nth-child(2) {
+            animation: box1Move 0.6s linear 0.2s infinite;
+        }
+
+        .box2 ul li:nth-child(3) {
+            animation: box1Move 0.6s linear 0.4s infinite;
+        }
+
+        .box2 ul li:nth-child(4) {
+            clear: left;
+            animation: box1Move 0.6s linear 0.4s infinite;
+        }
+
+        .box2 ul li:nth-child(5) {
+            animation: box1Move 0.6s linear 0.2s infinite;
+        }
+
+        .box2 ul li:nth-child(6) {
+            animation: box1Move 0.6s linear infinite;
+        }
+
+        .box2 ul li:nth-child(7) {
+            clear: left;
+            animation: box1Move 0.6s linear infinite;
+        }
+
+        .box2 ul li:nth-child(8) {
+
+            animation: box1Move 0.6s linear 0.2s infinite;
+        }
+
+        .box2 ul li:nth-child(9) {
+
+            animation: box1Move 0.6s linear 0.4s infinite;
+        }
+
+        .box3 {
+            position: relative;
+            animation: box3Move 0.6s linear infinite;
+        }
+
+        .box3 ul li:first-child {
+            position: absolute;
+            left: 40px;
+            top: 40px;
+            width: 0;
+            height: 0;
+            border: 10px solid white;
+            border-right-color: transparent;
+            border-radius: 10px;
+        }
+
+        .box3 ul li:last-child {
+            position: absolute;
+            left: 41px;
+            top: 41px;
+            width: 18px;
+            height: 18px;
+            background: black;
+            border-radius: 50%;
+        }
+
+        @keyframes box3Move {
+            0% {
+                transform: rotate(0) scale(1)
+            }
+
+            50% {
+                transform: rotate(180deg) scale(2)
+            }
+
+            0% {
+                transform: rotate(360deg) scale(1)
+            }
+        }
+
+        .box4 {
+            position: relative;
+            animation: box3Move 0.6s linear infinite;
+        }
+
+        .box4 ul li:nth-child(1) {
+            position: absolute;
+            left: 40px;
+            top: 40px;
+            width: 0;
+            height: 0;
+            border: 10px solid white;
+            border-right-color: transparent;
+            border-left-color: transparent;
+            border-radius: 10px;
+        }
+
+        .box4 ul li:nth-child(2) {
+            position: absolute;
+            left: 41px;
+            top: 41px;
+            width: 18px;
+            height: 18px;
+            background: black;
+            border-radius: 50%;
+        }
+
+        .box4 ul li:nth-child(3) {
+            position: absolute;
+            left: 44px;
+            top: 44px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: box4InnerMove 0.6s linear infinite;
+        }
+
+        @keyframes box4InnerMove {
+            0% {
+                transform: scale(0.2)
+            }
+
+            50% {
+                transform: scale(1)
+            }
+
+            100% {
+                transform: scale(0.2)
+            }
+        }
+
+        .box5 li {
+            width: 20px;
+            height: 20px;
+            background: white;
+            animation: box5Move 0.8s linear infinite;
+        }
+
+        @keyframes box5Move {
+            0% {
+                transform: rotate3d(0, 1, 0, 0)
+            }
+
+            50% {
+                transform: rotate3d(0, 1, 0, 180deg)
+            }
+
+            100% {
+                transform: rotate3d(0, 0, 1, 180deg)
+            }
+        }
+
+        .box6 {
+            position: relative;
+        }
+
+        .box6 ul {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            /*border:1px solid red;*/
+        }
+
+        .box6 ul:first-child {
+            animation: box6move1 0.6s linear infinite;
+        }
+
+        @keyframes box6move1 {
+            0% {
+                transform: rotate(0) scale(1.2)
+            }
+
+            50% {
+                transform: rotate(90deg) scale(0.6)
+            }
+
+            100% {
+                transform: rotate(180deg) scale(1.2)
+            }
+        }
+
+        .box6 ul:last-child {
+            animation: box6move2 0.6s linear infinite;
+        }
+
+        @keyframes box6move2 {
+            0% {
+                transform: rotate(0)
+            }
+
+            50% {
+                transform: rotate(-90deg)
+            }
+
+            100% {
+                transform: rotate(-180deg)
+            }
+        }
+
+        .box6 ul:first-child li:first-child {
+            width: 0;
+            height: 0;
+            border: 10px solid white;
+            border-right-color: transparent;
+            border-left-color: transparent;
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            border-radius: 50%;
+        }
+
+        .box6 ul:first-child li:last-child {
+            width: 18px;
+            height: 18px;
+            background: black;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            border-radius: 50%;
+        }
+
+        .box6 ul:last-child li:first-child {
+            width: 0;
+            height: 0;
+            border: 5px solid white;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+        }
+
+        .box6 ul:last-child li:last-child {
+            width: 8px;
+            height: 8px;
+            background: black;
+            position: absolute;
+            left: 21px;
+            top: 21px;
+            border-radius: 50%;
+        }
+
+        .box7 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            float: left;
+            margin: 40px 6px;
+            list-style-type: none;
+        }
+
+        .box7 ul li:nth-child(1),
+        .box7 ul li:nth-child(3),
+        .box7 ul li:nth-child(5) {
+            animation: box7moveX 0.8s linear infinite;
+        }
+
+        @keyframes box7moveX {
+            0% {
+                transform: perspective(400px) translate3d(0, 0, 200px)
+            }
+
+            25% {
+                transform: perspective(400px) translate3d(0, 20px, 0)
+            }
+
+            50% {
+                transform: perspective(400px) translate3d(0, 0, -200px)
+            }
+
+            75% {
+                transform: perspective(400px) translate3d(0, -20px, 0px)
+            }
+
+            100% {
+                transform: perspective(400px) translate3d(0, 0, 200px)
+            }
+        }
+
+        .box7 ul li:nth-child(2),
+        .box7 ul li:nth-child(4) {
+            animation: box7moveY 0.8s linear infinite;
+        }
+
+        @keyframes box7moveY {
+            0% {
+                -webkit-transform: perspective(400px) translate3d(0, 0, -200px)
+            }
+
+            25% {
+                -webkit-transform: perspective(400px) translate3d(0, -20px, 0)
+            }
+
+            50% {
+                -webkit-transform: perspective(400px) translate3d(0, 0, 200px)
+            }
+
+            75% {
+                -webkit-transform: perspective(400px) translate3d(0, 20px, 0px)
+            }
+
+            100% {
+                -webkit-transform: perspective(400px) translate3d(0, 0, -200px)
+            }
+        }
+
+        .box8 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            float: left;
+            margin: 40px 10px;
+            list-style-type: none;
+        }
+
+        .box8 ul {
+            transform-origin: 42px 44px;
+            animation: box8move 1s linear infinite;
+        }
+
+        @keyframes box8move {
+            0% {
+                transform: rotate(0) scale(1)
+            }
+
+            35% {
+                transform: rotate(180deg) scale(0.6)
+            }
+
+            50% {
+                transform: rotate(180deg) scale(0.6)
+            }
+
+            85% {
+                transform: rotate(360deg) scale(1)
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1)
+            }
+        }
+
+        .box9 li {
+            width: 6px;
+            height: 6px;
+            background: white;
+            list-style-type: none;
+        }
+
+        .box9 ul li:first-child {
+            margin-left: 25px;
+            margin-top: 25px;
+            animation: box9move1 1s linear infinite;
+        }
+
+        @keyframes box9move1 {
+            0% {
+                transform: translate(0, 0) scale(1.5) rotate(0)
+            }
+
+            25% {
+                transform: translate(50px, 0) scale(0.5) rotate(90deg)
+            }
+
+            50% {
+                transform: translate(50px, 50px) scale(1.5) rotate(180deg)
+            }
+
+            75% {
+                transform: translate(0, 50px) scale(0.5) rotate(270deg)
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1.5) rotate(360deg)
+            }
+        }
+
+        .box9 ul li:last-child {
+            margin-left: 75px;
+            margin-top: 50px;
+            animation: box9move2 1s linear infinite;
+        }
+
+        @keyframes box9move2 {
+            0% {
+                transform: translate(0, 0) scale(1.5) rotate(0)
+            }
+
+            25% {
+                transform: translate(-50px, 0) scale(0.5) rotate(90deg)
+            }
+
+            50% {
+                transform: translate(-50px, -50px) scale(1.5) rotate(180deg)
+            }
+
+            75% {
+                transform: translate(0, -50px) scale(0.5) rotate(270deg)
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1.5) rotate(360deg)
+            }
+        }
+
+        .box10 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .box10 ul li:first-child {
+            margin-left: 50px;
+            margin-top: 50px;
+            animation: box10move1 0.6s linear infinite;
+        }
+
+        @keyframes box10move1 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            33% {
+                transform: translate(-12px, -20px)
+            }
+
+            66% {
+                transform: translate(12px, -20px)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .box10 ul li:last-child {
+            margin-left: 50px;
+            margin-top: -8px;
+            animation: box10move2 0.6s linear infinite;
+        }
+
+        @keyframes box10move2 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            33% {
+                transform: translate(12px, 20px)
+            }
+
+            66% {
+                transform: translate(-12px, 20px)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .box11 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .box11 ul li:first-child {
+            margin-left: 30px;
+            margin-top: 30px;
+            animation: box11move1 1s linear infinite;
+        }
+
+        @keyframes box11move1 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            15% {
+                transform: translate(40px, 0)
+            }
+
+            50% {
+                transform: translate(0, 40px)
+            }
+
+            65% {
+                transform: translate(40px, 40px)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .box11 ul li:last-child {
+            margin-left: 70px;
+            margin-top: 36px;
+            animation: box11move2 1s linear infinite;
+        }
+
+        @keyframes box11move2 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            15% {
+                transform: translate(-48px, 0)
+            }
+
+            50% {
+                transform: translate(0, -48px)
+            }
+
+            65% {
+                transform: translate(-48px, -48px)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .box12 {
+            position: relative;
+        }
+
+        .box12 li {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            width: 8px;
+            height: 8px;
+            border: 1px solid white;
+            border-radius: 50%;
+        }
+
+        .box12 ul li:nth-child(1) {
+            animation: box12move1 0.9s linear infinite;
+        }
+
+        .box12 ul li:nth-child(2) {
+            animation: box12move2 0.9s linear infinite;
+        }
+
+        .box12 ul li:nth-child(3) {
+            animation: box12move3 0.9s linear infinite;
+        }
+
+        @keyframes box12move1 {
+            0% {
+                transform: rotate(30deg) translate(15px)
+            }
+
+            50% {
+                transform: rotate(90deg) translate(30px)
+            }
+
+            100% {
+                transform: rotate(150deg) translate(15px)
+            }
+        }
+
+        @keyframes box12move2 {
+            0% {
+                transform: rotate(150deg) translate(15px)
+            }
+
+            50% {
+                transform: rotate(210deg) translate(30px)
+            }
+
+            100% {
+                transform: rotate(270deg) translate(15px)
+            }
+        }
+
+        @keyframes box12move3 {
+            0% {
+                transform: rotate(270deg) translate(15px)
+            }
+
+            50% {
+                transform: rotate(330deg) translate(30px)
+            }
+
+            100% {
+                transform: rotate(390deg) translate(15px)
+            }
+        }
+
+        .box13 li {
+            margin: 30px auto;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: box13move 1s linear infinite;
+        }
+
+        @keyframes box13move {
+            0% {
+                transform: scale(1);
+                background: rgba(255, 255, 255, 1)
+            }
+
+            50% {
+                transform: scale(2);
+                background: rgba(255, 255, 255, 0.5)
+            }
+
+            100% {
+                transform: scale(10);
+                background: rgba(255, 255, 255, 0)
+            }
+        }
+
+        .box14 li,
+        .box15 li,
+        .box19 li,
+        .box20 li {
+            width: 2px;
+            height: 10px;
+            background: white;
+            float: left;
+            margin: 30px 3px;
+            list-style-type: none;
+        }
+
+        .box14 ul li:nth-child(1) {
+            animation: box14move 1.2s linear infinite;
+        }
+
+        .box14 ul li:nth-child(2) {
+            animation: box14move 1.2s linear 0.1s infinite;
+        }
+
+        .box14 ul li:nth-child(3) {
+            animation: box14move 1.2s linear 0.2s infinite;
+        }
+
+        .box14 ul li:nth-child(4) {
+            animation: box14move 1.2s linear 0.3s infinite;
+        }
+
+        .box14 ul li:nth-child(5) {
+            animation: box14move 1.2s linear 0.4s infinite;
+        }
+
+        .box14 ul li:nth-child(6) {
+            animation: box14move 1.2s linear 0.5s infinite;
+        }
+
+        @keyframes box14move {
+            0% {
+                transform: scaleY(1)
+            }
+
+            20% {
+                transform: scaleY(1)
+            }
+
+            60% {
+                transform: scaleY(2.5)
+            }
+
+            90% {
+                transform: scaleY(1)
+            }
+
+            100% {
+                transform: scaleY(1)
+            }
+        }
+
+        .box15 ul li:nth-child(1) {
+            animation: box15move 1s linear 0.3s infinite;
+        }
+
+        .box15 ul li:nth-child(2) {
+            animation: box15move 1s linear 0.2s infinite;
+        }
+
+        .box15 ul li:nth-child(3) {
+            animation: box15move 1s linear 0.3s infinite;
+        }
+
+        .box15 ul li:nth-child(4) {
+            animation: box15move 1s linear infinite;
+        }
+
+        @keyframes box15move {
+            0% {
+                transform: scaleY(1)
+            }
+
+            50% {
+                transform: scaleY(2.5)
+            }
+
+            100% {
+                transform: scaleY(1)
+            }
+
+        }
+
+        .box16 {
+            position: relative;
+        }
+
+        .box16 li {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            list-style-type: none;
+        }
+
+        .box16 ul li:nth-child(1) {
+            animation: box16move 1s linear infinite;
+        }
+
+        .box16 ul li:nth-child(2) {
+            animation: box16move 1s linear 0.2s infinite;
+        }
+
+        .box16 ul li:nth-child(3) {
+            animation: box16move 1s linear 0.4s infinite;
+        }
+
+        .box16 ul li:nth-child(4) {
+            animation: box16move 1s linear 0.6s infinite;
+        }
+
+        .box16 ul li:nth-child(5) {
+            animation: box16move 1s linear 0.8s infinite;
+        }
+
+        .box16 ul li:nth-child(6) {
+            animation: box16move 1s linear 1s infinite;
+        }
+
+        @keyframes box16move {
+            0% {
+                transform: scale(1);
+                background: rgba(255, 255, 255, 1)
+            }
+
+            100% {
+                transform: scale(10);
+                background: rgba(255, 255, 255, 0)
+            }
+
+        }
+
+        .box17 li,
+        .box18 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            margin: 40px 5px;
+            border-radius: 50%;
+            float: left;
+            list-style-type: none;
+        }
+
+        .box17 ul li:nth-child(1) {
+            animation: box17move 0.6s linear infinite;
+        }
+
+        .box17 ul li:nth-child(2) {
+            animation: box17move 0.6s linear 0.1s infinite;
+        }
+
+        .box17 ul li:nth-child(3) {
+            animation: box17move 0.6s linear 0.2s infinite;
+        }
+
+        @keyframes box17move {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            25% {
+                transform: translate(0, -10px)
+            }
+
+            75% {
+                transform: translate(0, 10px)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .box18 ul li:nth-child(1) {
+            animation: box18move 0.6s linear infinite;
+        }
+
+        .box18 ul li:nth-child(2) {
+            animation: box18move 0.6s linear 0.2s infinite;
+        }
+
+        .box18 ul li:nth-child(3) {
+            animation: box18move 0.6s linear infinite;
+        }
+
+        @keyframes box18move {
+            0% {
+                background: rgba(255, 255, 255, 1)
+            }
+
+            50% {
+                background: rgba(255, 255, 255, 0.2)
+            }
+
+            100% {
+                background: rgba(255, 255, 255, 1)
+            }
+        }
+
+        .box19 ul li:nth-child(1) {
+            animation: box19move 1s linear 0.4s infinite;
+        }
+
+        .box19 ul li:nth-child(2) {
+            animation: box19move 1s linear 0.2s infinite;
+        }
+
+        .box19 ul li:nth-child(3) {
+            animation: box19move 1s linear infinite;
+        }
+
+        .box19 ul li:nth-child(4) {
+            animation: box19move 1s linear 0.2s infinite;
+        }
+
+        .box19 ul li:nth-child(5) {
+            animation: box19move 1s linear 0.4s infinite;
+        }
+
+        @keyframes box19move {
+            0% {
+                transform: scale(1, 1)
+            }
+
+            50% {
+                transform: scale(1, 3)
+            }
+
+            100% {
+                transform: scale(1, 1)
+            }
+        }
+
+        .box20 ul li:nth-child(1) {
+            animation: box20move 0.8s linear 0.4s infinite;
+        }
+
+        .box20 ul li:nth-child(2) {
+            animation: box20move 0.8s linear 0.2s infinite;
+        }
+
+        .box20 ul li:nth-child(3) {
+            animation: box20move 0.8s linear infinite;
+        }
+
+        .box20 ul li:nth-child(4) {
+            animation: box20move 0.8s linear 0.2s infinite;
+        }
+
+        .box20 ul li:nth-child(5) {
+            animation: box20move 0.8s linear 0.4s infinite;
+        }
+
+        @keyframes box20move {
+            0% {
+                transform: scale(1, 1)
+            }
+
+            5% {
+                transform: scale(1, 3)
+            }
+
+            40% {
+                transform: scale(1, 2)
+            }
+
+            60% {
+                transform: scale(1, 1)
+            }
+
+            100% {
+                transform: scale(1, 1)
+            }
+        }
+
+        .box21 li {
+            list-style-type: none;
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            border: 1px solid white;
+            margin: 40px 40px;
+            animation: box21move 1s linear infinite;
+
+        }
+
+        @keyframes box21move {
+            0% {
+                transform: translate(0, 0);
+                width: 8px;
+                height: 8px
+            }
+
+            100% {
+                transform: translate(-16px, -16px);
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .box22 {
+            position: relative;
+        }
+
+        .box22 li {
+            list-style-type: none;
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            border: 1px solid white;
+            position: absolute;
+            left: 40px;
+            top: 40px;
+        }
+
+        .box22 ul li:nth-child(1) {
+            animation: box22move 1s linear infinite;
+        }
+
+        .box22 ul li:nth-child(2) {
+            animation: box22move 1s linear 0.1s infinite;
+        }
+
+        .box22 ul li:nth-child(3) {
+            animation: box22move 1s linear 0.2s infinite;
+        }
+
+        .box22 ul li:nth-child(4) {
+            animation: box22move 1s linear 0.3s infinite;
+        }
+
+        .box22 ul li:nth-child(5) {
+            animation: box22move 1s linear 0.4s infinite;
+        }
+
+        @keyframes box22move {
+            0% {
+                transform: translate(0, 0);
+                width: 8px;
+                height: 8px;
+                border-color: rgba(255, 255, 255, 1)
+            }
+
+            60% {
+                transform: translate(-16px, -16px);
+                width: 40px;
+                height: 40px;
+                border-color: rgba(255, 255, 255, 1)
+            }
+
+            61% {
+                transform: translate(-16px, -16px);
+                width: 40px;
+                height: 40px;
+                border-color: rgba(255, 255, 255, 0)
+            }
+
+            100% {
+                transform: translate(-16px, -16px);
+                width: 40px;
+                height: 40px;
+                border-color: rgba(255, 255, 255, 0)
+            }
+        }
+
+        .box23 {
+            position: relative;
+        }
+
+        .box23 li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            list-style-type: none;
+        }
+
+        .box23 ul li:nth-child(1) {
+            position: absolute;
+            left: 50px;
+            top: 30px;
+            animation: box23move 1s linear infinite;
+        }
+
+        .box23 ul li:nth-child(2) {
+            position: absolute;
+            left: 36px;
+            top: 35px;
+            animation: box23move 1s linear 0.1s infinite;
+        }
+
+        .box23 ul li:nth-child(3) {
+            position: absolute;
+            left: 64px;
+            top: 35px;
+            animation: box23move 1s linear 0.7s infinite;
+        }
+
+        .box23 ul li:nth-child(4) {
+            position: absolute;
+            left: 30px;
+            top: 50px;
+            animation: box23move 1s linear 0.2s infinite;
+        }
+
+        .box23 ul li:nth-child(5) {
+            position: absolute;
+            left: 70px;
+            top: 50px;
+            animation: box23move 1s linear 0.6s infinite;
+        }
+
+        .box23 ul li:nth-child(6) {
+            position: absolute;
+            left: 36px;
+            top: 65px;
+            animation: box23move 1s linear 0.3s infinite;
+        }
+
+        .box23 ul li:nth-child(7) {
+            position: absolute;
+            left: 64px;
+            top: 65px;
+            animation: box23move 1s linear 0.5s infinite;
+        }
+
+        .box23 ul li:nth-child(8) {
+            position: absolute;
+            left: 50px;
+            top: 70px;
+            animation: box23move 1s linear 0.4s infinite;
+        }
+
+        @keyframes box23move {
+            0% {
+                transform: scale(1, 1);
+                background: rgba(255, 255, 255, 0.6)
+            }
+
+            10% {
+                transform: scale(1, 1);
+                background: rgba(255, 255, 255, 0.6)
+            }
+
+            20% {
+                transform: scale(1.2, 1.2);
+                background: rgba(255, 255, 255, 0.7)
+            }
+
+            30% {
+                transform: scale(1.4, 1.4);
+                background: rgba(255, 255, 255, 0.8)
+            }
+
+            40% {
+                transform: scale(1.6, 1.6);
+                background: rgba(255, 255, 255, 0.9)
+            }
+
+            50% {
+                transform: scale(1.8, 1.8);
+                background: rgba(255, 255, 255, 1)
+            }
+
+            60% {
+                transform: scale(1.6, 1.6);
+                background: rgba(255, 255, 255, 0.9)
+            }
+
+            70% {
+                transform: scale(1.4, 1.4);
+                background: rgba(255, 255, 255, 0.8)
+            }
+
+            80% {
+                transform: scale(1.2, 1.2);
+                background: rgba(255, 255, 255, 0.7)
+            }
+
+            90% {
+                transform: scale(1.2, 1.2);
+                background: rgba(255, 255, 255, 0.6)
+            }
+
+            100% {
+                transform: scale(1, 1);
+                background: rgba(255, 255, 255, 0.6)
+            }
+        }
+
+        .box24 {
+            position: relative;
+        }
+
+        .box24 li {
+            width: 18px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.4);
+            position: absolute;
+            left: 50px;
+            top: 50px;
+        }
+
+        .box24 ul li:nth-child(1) {
+            transform: rotate(0) translate(30px);
+            animation: box24move 1s linear infinite;
+        }
+
+        .box24 ul li:nth-child(2) {
+            transform: rotate(45deg) translate(30px);
+            animation: box24move 1s linear 0.1s infinite;
+        }
+
+        .box24 ul li:nth-child(3) {
+            transform: rotate(90deg) translate(30px);
+            animation: box24move 1s linear 0.2s infinite;
+        }
+
+        .box24 ul li:nth-child(4) {
+            transform: rotate(135deg) translate(30px);
+            animation: box24move 1s linear 0.3s infinite;
+        }
+
+        .box24 ul li:nth-child(5) {
+            transform: rotate(180deg) translate(30px);
+            animation: box24move 1s linear 0.4s infinite;
+        }
+
+        .box24 ul li:nth-child(6) {
+            transform: rotate(225deg) translate(30px);
+            animation: box24move 1s linear 0.5s infinite;
+        }
+
+        .box24 ul li:nth-child(7) {
+            transform: rotate(270deg) translate(30px);
+            animation: box24move 1s linear 0.6s infinite;
+        }
+
+        .box24 ul li:nth-child(8) {
+            transform: rotate(315deg) translate(30px);
+            animation: box24move 1s linear 0.7s infinite;
+        }
+
+        @keyframes box24move {
+            0% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+
+            10% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+
+            20% {
+                background: rgba(255, 255, 255, 0.5)
+            }
+
+            30% {
+                background: rgba(255, 255, 255, 0.6)
+            }
+
+            40% {
+                background: rgba(255, 255, 255, 0.7)
+            }
+
+            50% {
+                background: rgba(255, 255, 255, 1)
+            }
+
+            60% {
+                background: rgba(255, 255, 255, 0.7)
+            }
+
+            70% {
+                background: rgba(255, 255, 255, 0.6)
+            }
+
+            80% {
+                background: rgba(255, 255, 255, 0.5)
+            }
+
+            90% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+
+            100% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+        }
+
+        .box25 li {
+            list-style-type: none;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-bottom-color: white;
+            margin: 30px auto;
+            animation: box25move 2s linear infinite;
+        }
+
+        @keyframes box25move {
+            0% {
+                transform: rotate3d(0, 0, 0, 0)
+            }
+
+            25% {
+                transform: rotate3d(1, 0, 0, 180deg)
+            }
+
+            50% {
+                transform: rotate3d(0, 0, 1, 180deg)
+            }
+
+            75% {
+                transform: rotate3d(0, 1, 0, 180deg)
+            }
+
+            100% {
+                transform: rotate3d(0, 0, 1, 360deg)
+            }
+        }
+
+        .box26 {
+            position: relative;
+        }
+
+        .box26 li {
+            list-style-type: none;
+        }
+
+        .box26 ul li:nth-child(1) {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border: 20px solid white;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: box26move1 0.5s linear infinite;
+        }
+
+        @keyframes box26move1 {
+            0% {
+                transform: rotate(0)
+            }
+
+            50% {
+                transform: rotate(45deg)
+            }
+
+            100% {
+                transform: rotate(0)
+            }
+        }
+
+        .box26 ul li:nth-child(2) {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border: 20px solid white;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: box26move2 0.5s linear infinite;
+        }
+
+        @keyframes box26move2 {
+            0% {
+                transform: rotate(0)
+            }
+
+            50% {
+                transform: rotate(-45deg)
+            }
+
+            100% {
+                transform: rotate(0)
+            }
+        }
+
+        .box26 ul li:nth-child(3) {
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            position: absolute;
+            left: 80px;
+            top: 46px;
+            animation: box26move3 0.6s linear infinite;
+        }
+
+        .box26 ul li:nth-child(4) {
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            position: absolute;
+            left: 80px;
+            top: 46px;
+            animation: box26move3 0.6s linear 0.2s infinite;
+        }
+
+        .box26 ul li:nth-child(5) {
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            position: absolute;
+            left: 80px;
+            top: 46px;
+            animation: box26move3 0.6s linear 0.4s infinite;
+        }
+
+        @keyframes box26move3 {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            100% {
+                transform: translate(-50px, 0)
+            }
+        }
+
+        .box27 ul {
+            width: 30px;
+            height: 25px;
+            margin: 35px auto;
+        }
+
+        .box27 ul li {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            float: left;
+            list-style-type: none;
+            margin: 1px;
+        }
+
+        .box27 ul li:nth-child(1),
+        .box27 ul li:nth-child(5),
+        .box27 ul li:nth-child(9) {
+            animation: box27move 1s linear infinite;
+        }
+
+        .box27 ul li:nth-child(2),
+        .box27 ul li:nth-child(6),
+        .box27 ul li:nth-child(7) {
+            animation: box27move 1s linear 0.4s infinite;
+        }
+
+        .box27 ul li:nth-child(3),
+        .box27 ul li:nth-child(4),
+        .box27 ul li:nth-child(8) {
+            animation: box27move 1s linear 0.8s infinite;
+        }
+
+        @keyframes box27move {
+            0% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+
+            25% {
+                background: rgba(255, 255, 255, 0.8)
+            }
+
+            50% {
+                background: rgba(255, 255, 255, 1)
+            }
+
+            75% {
+                background: rgba(255, 255, 255, 0.8)
+            }
+
+            100% {
+                background: rgba(255, 255, 255, 0.4)
+            }
+        }
+
+        .box28 ul {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            margin: 35px;
+            transform-origin: 20px 20px;
+            animation: box28move 1s linear infinite;
+        }
+
+        @keyframes box28move {
+            0% {
+                transform: rotate(0)
+            }
+
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+
+        .box28 ul li:first-child {
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-top-color: white;
+            border-radius: 20px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .box28 ul li:last-child {
+            width: 28px;
+            height: 28px;
+            background: black;
+            position: absolute;
+            left: 6px;
+            top: 6px;
+        }
+
+        .box29 li {
+            position: absolute;
+            width: 30px;
+            height: 6px;
+            background: #fff;
+        }
+
+        .box29 {
+            position: relative;
+            animation: circle 1s linear infinite;
+            transform-origin: 15px 3px;
+        }
+        
+        .box29 ul li:nth-child(1) {
+            opacity: 1;
+            transform: rotate(0deg) translate(150%, 0%);
+        }
+
+        .box29 ul li:nth-child(2) {
+            opacity: 0.9;
+            transform: rotate(45deg) translate(150%, 0%);
+        }
+
+        .box29 ul li:nth-child(3) {
+            opacity: 0.8;
+            transform:rotate(90deg) translate(150%, 0%) ;
+        }
+
+        .box29 ul li:nth-child(4) {
+            opacity: 0.7;
+            transform:rotate(135deg) translate(150%, 0%) ;
+        }
+
+        .box29 ul li:nth-child(5) {
+            opacity: 0.6;
+            transform:rotate(180deg) translate(150%, 0%) ;
+        }
+
+        .box29 ul li:nth-child(6) {
+            opacity: 0.5;
+            transform:rotate(225deg) translate(150%, 0%) ;
+        }
+
+        .box29 ul li:nth-child(7) {
+            opacity: 0.4;
+            transform:rotate(270deg) translate(150%, 0%) ;
+        }
+
+        .box29 ul li:nth-child(8) {
+            opacity: 0.3;
+            transform:rotate(315deg) translate(150%, -50%) ;
+        }
+
+        @keyframes circle {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            /* 12.5% {
+                transform: rotate(45deg);
+            }
+
+           25% {
+                transform: rotate(90deg);
+            }
+
+            37.5% {
+                transform: rotate(135deg);
+            }
+
+            50% {
+                transform: rotate(180deg);
+            }
+
+            62.5% {
+                transform: rotate(225deg);
+            }
+
+            75% {
+                transform: rotate(270deg);
+            }
+
+            87.5% {
+                transform: rotate(315deg);
+            } */
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box2">
+
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+    </div>
+    <div class="box3">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box4">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box5">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box6">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box7">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box8">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box9">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box10">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box11">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box12">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box13">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box14">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box15">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box16">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box17">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box18">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box19">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box20">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box21">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box22">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box23">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box24">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box25">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box26">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box27">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box28">
+        <ul>
+            <li>
+
+            </li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="box29">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+
+</html>
