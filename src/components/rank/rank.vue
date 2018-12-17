@@ -2,7 +2,7 @@
   <div class="theContainer">
     <div class='rankHeader'>QQ音乐巅峰榜</div>
     <div class='itemBox' v-for='item in hotLocalList' :key='item.topID'>
-      <div class='imgBox'>
+      <div class='imgBox' @click='showSongList(item.topID,item.type,item.update_key,item.ListName,item.pic_v12)'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -11,7 +11,7 @@
     </div>
     <div class='rankHeader'>全球榜</div>
     <div class='itemBox' v-for='item in hotGlobalList' :key='item.topID'>
-      <div class='imgBox'>
+      <div class='imgBox' @click='showSongList(item.topID,item.type,item.update_key,item.ListName)'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -19,7 +19,7 @@
       </ol>
     </div>
     <transition name='fRightslide'> 
-       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList'></songlist>
+       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :songlistId='songlistId' :songListType='songListType' :songListDateTime='songListDateTime' :listName='listName' :srcUrl='srcUrl'></songlist>
     </transition> 
   </div>
 </template>
@@ -32,7 +32,12 @@ export default {
   props: {},
   data() {
     return {
-      isShowSongList: true
+      isShowSongList: false,
+      songlistId:'',
+      songListType:'',
+      songListDateTime:'',
+      listName:'',
+      srcUrl:''
     };
   },
   created: function() {
@@ -40,8 +45,16 @@ export default {
   },
   methods: {
     turnOffSongList: function() {
-      console.log("2222");
+      console.log("close self is actived");
       this.isShowSongList = false;
+    },
+    showSongList:function(id,type,datetime,name,srcUrl){
+      this.songlistId=id;
+      this.songListType=type;
+      this.songListDateTime=datetime;
+      this.listName=name;
+      this.srcUrl=srcUrl;
+      this.isShowSongList=true;
     }
   },
   computed: {

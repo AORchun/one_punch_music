@@ -18,6 +18,10 @@ const header = {
   origin: ' https://y.qq.com',
   referer: "https://y.qq.com/m/index.html"
 }
+const header2 = {
+  origin: ' https://y.qq.com',
+  referer: "https://y.qq.com/n/yqq/toplist/123.html"
+}
 const params = {
   g_tk: 5381,
   uin: 0,
@@ -187,6 +191,36 @@ app.get('/inputword', function (req, res) {
     res.send(errror)
   })
 })
+
+//点击排行榜图片时获取歌单列表的详情
+
+const songlistDetialParams = {
+  tpl: 3,
+  page: 'detail',
+  song_begin: 0,
+  song_num: 30,
+  g_tk: 5381,
+  jsonpCallback: 'MusicJsonCallbacktoplist',
+  loginUin: 0,
+  hostUin: 0,
+  format: 'jsonp',
+  inCharset: 'utf8',
+  outCharset: 'utf-8',
+  notice: 0,
+  platform: 'yqq',
+  needNewCode: 0,
+}
+app.get('/getDetailList', function (req, res) {
+  let params = Object.assign({}, songlistDetialParams, { date: req.query.datatime, topid: req.query.songlistId, type: req.query.songListType == 1 ? 'global' : 'top' })
+  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg', { header,params }).then(function (response) { 
+    let result = response.data;
+    function MusicJsonCallbacktoplist(data) {
+      //console.log(data);
+      res.send(data);
+    }
+    eval(result);
+  })
+ })
 const server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;

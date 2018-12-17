@@ -2,23 +2,23 @@
   <div class='song-list-container'>
     <div class='outer' @touchmove.prevent>
       <div class='imgBox'  ref='imgBox' @click='closeSelf'>
-        <img src='./example.png' :style="{transform:'translate(-50%,-50%) scale('+ scale +')'}">
+        <img :src='srcUrl' :style="{transform:'translate(-50%,-50%) scale('+ scale +')'}" onError="this.src='/src/components/header/default@2x.png';this.onerror=null;">
       </div>
       <div class="itemContianer" :style="{top:songlistTop+'px',minHeight:'calc(100% - ' + songlistTop + 'px)',maxHeight:'calc(100% - 100px)'}" @touchmove='move($event)' @touchstart='touchstart($event)' @touchend='touchend($event)' ref='scrollContainer'>
         <div class="itemBox"  ref='scrollBox'>
-            <div class='listTitle'>歌单 19首</div>
+            <div class='listTitle'>{{listName}} {{songListInfo.cur_song_num}}首</div>
             <ul>
-              <li class='songItem'>
-                <span>1</span>
+              <li class='songItem' v-for='(item,index) in songListInfo.songlist' :key='item.data.songid' :class="{'top3Count': index<3}">
+                <span>{{index+1}}</span>
                 <div class='songInfo'>
-                  <p>雪落的声音(live)</p>
-                  <p>林俊杰</p>
+                  <p>{{item.data.songname}}</p>
+                  <p>{{item.data.singer[0].name}}</p>
                 </div>
               </li>
             </ul>
         </div>
       </div>
-      <div v-if='songList.length==0' :style="{top:songlistTop+'px',height:'calc(100% - ' + songlistTop + 'px)'}" class='loadingBox'>
+      <div v-if='!songListInfo.songlist' :style="{top:songlistTop+'px',height:'calc(100% - ' + songlistTop + 'px)'}" class='loadingBox'>
         <loading></loading>
       </div>
     </div>
@@ -27,6 +27,7 @@
 <script type='text/ecmascript-6'>
 import BScroll from "better-scroll";
 import loading from "components/loading/loading";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -34,7 +35,7 @@ export default {
       isShow: false, //本组件是否显示
       songlistTop: 0, //动态改变songlist top的距离
       songlistTopBase: 0, //记录初始的songlist top的值
-      songList: [], //歌单列表
+      songListInfo:{}, //歌单列表
       pointLog: 0, //点击坐标与itemsContainer的上边缘的距离
       previousPoint: 0, //move事件的上一个事件clientY的位置 用于判断滑动的方向;
       BScroll: "",
@@ -42,15 +43,67 @@ export default {
     };
   },
   props: {
-    listTitle: String
+    listName: String,
+    songListType: Number,
+    songlistId: Number,
+    songListDateTime: String,
+    listName: String,
+    srcUrl:String
   },
   components: {
     loading
   },
-  created() {},
-  mounted: function() {
+  created() {
+    var that = this;
+    axios.get("http://localhost:3000/getDetailList", {
+      params: {
+        datatime: this.songListDateTime,
+        songlistId: this.songlistId,
+        songListType: this.songListType
+      }
+    }).then(function(data){
+      that.songListInfo=data.data;
+      that.$nextTick(function(){that.initScroll()})
+    });
+  },
+  mounted: function(){
     this.songlistTop = this.$refs.imgBox.clientHeight;
     this.songlistTopBase = this.$refs.imgBox.clientHeight;
+    console.log(this.songlistTop)
+  },
+  methods: {
+    touchstart: function(event) {
+      this.pointLog =
+        event.touches[0].clientY - this.$refs.scrollContainer.offsetTop;
+      this.previousPoint = event.touches[0].clientY;
+    },
+    move: function(event) {
+      var flag = event.touches[0].clientY - this.previousPoint;
+      if (
+        this.songlistTop >= this.songlistTopBase &&
+        this.SListScrollTop >= 0
+      ) {
+        //songlistTop大于等于基准线 且卷曲距离大于等于0
+        this.songlistTop = this.songlistTopBase; //songlistTop 置为基准线位置
+        this.BScroll.enable(); //BScroll为可用
+      } else if (this.songlistTop <= 100 && this.SListScrollTop <= 0) {
+        //songlistTop小于等于100px,切卷曲距离小于等于0
+        this.songlistTop = 100; //songlistTop置为100px
+        this.BScroll.enable(); //BScroll为可用
+        this.BScroll.refresh();
+      } else {
+        //进入其他情况时
+        this.SListScrollTop = 0; //SListScrollTop置为0
+        this.BScroll.disable();
+        this.songlistTop = event.touches[0].clientY - this.pointLog; //置为随鼠标滑动
+      }
+      this.previousPoint = event.touches[0].clientY;
+    },
+    touchend: function(event) {},
+    closeSelf: function() {
+      this.$emit("closeComponent");
+    },
+    initScroll:function() {
     this.BScroll = new BScroll(this.$refs.scrollContainer, {
       probeType: 3
     });
@@ -66,39 +119,7 @@ export default {
         that.BScroll.stop();
       }
     });
-  },
-  methods: {
-    touchstart: function(event) {
-      this.pointLog =
-        event.touches[0].clientY - this.$refs.scrollContainer.offsetTop;
-      this.previousPoint = event.touches[0].clientY;
-    },
-    move: function(event) {
-      var flag = event.touches[0].clientY - this.previousPoint;
-      if (
-        this.songlistTop >= this.songlistTopBase &&
-        this.SListScrollTop >= 0
-      ) {
-        //songlistTop大于等于基准线 且卷曲距离大于等于0
-        this.songlistTop = this.songlistTopBase; //songlistTop置为基准线位置
-        this.BScroll.enable(); //BScroll为可用
-      } else if (this.songlistTop <= 100 && this.SListScrollTop <= 0) {
-        //songlistTop小于等于100px,切卷曲距离小于等于0
-        this.songlistTop = 100; //songlistTop置为100px
-        this.BScroll.enable(); //BScroll为可用
-      } else {
-        //进入其他情况时
-        this.SListScrollTop = 0; //SListScrollTop置为0
-        this.BScroll.disable();
-        this.songlistTop = event.touches[0].clientY - this.pointLog; //置为随鼠标滑动
-      }
-      this.previousPoint = event.touches[0].clientY;
-    },
-    touchend: function(event) {},
-    closeSelf: function() {
-      console.log("111");
-      this.$emit("closeComponent");
-    }
+  }
   }
 };
 </script>
@@ -175,6 +196,8 @@ export default {
               white-space: nowrap
             p:last-child
               color: $color-text-d
+        .top3Count span
+          color:$color-theme
   .loadingBox
     width: 100%
     background: #222

@@ -34,7 +34,6 @@ export default {
     changeColor: function(index, item) {
       this.activeNum = index;
       this.activeLetter = item;
-      console.log(document.getElementsByClassName(".singerItems")[index]);
       this.scroll.scrollToElement(
         document.getElementsByClassName("singerItems")[index],
         500,
@@ -70,8 +69,8 @@ export default {
         var init = 0;
         var arr1 = document.getElementsByClassName("singerItems");
         var len = arr1.length;
-        console.log(len);
-        console.log(arr1);
+        // console.log(len);
+        // console.log(arr1);
         for (var i = 0; i < len; i++) {
           init += arr1[i].offsetHeight;
           arr.push(init);

@@ -51,7 +51,7 @@ var store = new Vuex.Store({
 
     //排行榜更新
     getRankList(state, data) { 
-      console.log(data.data);
+      //console.log(data.data);
       state.localList=data.data[0].List
       state.globalList=data.data[1].List
     },
