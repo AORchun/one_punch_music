@@ -194,4 +194,38 @@ app.get('/inputword', function (req, res) {
   })
 })
 
+//点击排行榜时获取歌单
+
+const rankSongListParams = {
+  tpl: 3,
+  page: 'detail',
+  song_begin: 0,
+  song_num: 30,
+  g_tk: 5381,
+  loginUin: 0,
+  hostUin: 0,
+  format: 'json',
+  inCharset: 'utf8',
+  outCharset: 'utf-8',
+  notice: 0,
+  platform: 'yqq.json',
+  needNewCode: 0
+}
+
+const songlistHeader = {
+  origin: "https://y.qq.com"
+}
+app.get('/songlist', function (req, res) {
+  let params = Object.assign({}, rankSongListParams, { date: req.query.update, topid: req.query.topid ,type:req.query.type});
+  let header = Object.assign({}, songlistHeader, { referer: "https://y.qq.com/n/yqq/toplist/" + req.query.topid + '.html' });
+  //console.log(params, header);
+  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg', { header, params }).then(function (response) { 
+
+    let result = response.data;
+    console.log(result);
+    res.send(result);
+  }).catch(function (errror) { 
+    res.send(errror)
+  })
+})
 app.use('/', route)
