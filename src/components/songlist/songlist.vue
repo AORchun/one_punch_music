@@ -2,17 +2,17 @@
   <div class='song-list-container'>
     <div class='outer' @touchmove.prevent>
       <div class='imgBox'  ref='imgBox' @click='closeSelf'>
-        <img src='./example.png' :style="{transform:'translate(-50%,-50%) scale('+ scale +')'}">
+        <img :src='imgTop' :style="{transform:'translate(-50%,-50%) scale('+ scale +')'}">
       </div>
       <div class="itemContianer" :style="{top:songlistTop+'px',minHeight:'calc(100% - ' + songlistTop + 'px)',maxHeight:'calc(100% - 100px)'}" @touchmove='move($event)' @touchstart='touchstart($event)' @touchend='touchend($event)' ref='scrollContainer'>
         <div class="itemBox"  ref='scrollBox'>
             <div class='listTitle'>歌单 19首</div>
             <ul>
-              <li class='songItem'>
-                <span>1</span>
+              <li class='songItem' v-for='(item,index) in songList.songlist' :key='item.data.songid'>
+                <span>{{index}}</span>
                 <div class='songInfo'>
-                  <p>雪落的声音(live)</p>
-                  <p>林俊杰</p>
+                  <p>{{item.data.songname}}</p>
+                  <p>{{item.data.singer[0].name}}</p>
                 </div>
               </li>
             </ul>
@@ -27,6 +27,7 @@
 <script type='text/ecmascript-6'>
 import BScroll from "better-scroll";
 import loading from "components/loading/loading";
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -42,12 +43,23 @@ export default {
     };
   },
   props: {
-    listTitle: String
+    listTitle: String,
+    topId:[String,Number],
+    update:String,
+    reqType:String,
+    imgTop:String
   },
   components: {
     loading
   },
-  created() {},
+  created() {
+    var that=this
+    axios.get('http://127.0.0.1:3000/songlist?topid='+this.topId+"&update="+this.update+"&type="+this.reqType).then(function (response) {
+        that.songList=response.data;
+      }).catch(function (error) {
+        console.log(error);
+       })
+  },
   mounted: function() {
     this.songlistTop = this.$refs.imgBox.clientHeight;
     this.songlistTopBase = this.$refs.imgBox.clientHeight;
@@ -79,13 +91,15 @@ export default {
         this.songlistTop >= this.songlistTopBase &&
         this.SListScrollTop >= 0
       ) {
-        //songlistTop大于等于基准线 且卷曲距离大于等于0
-        this.songlistTop = this.songlistTopBase; //songlistTop置为基准线位置
-        this.BScroll.enable(); //BScroll为可用
+          //songlistTop大于等于基准线 且卷曲距离大于等于0
+        this.songlistTop = this.songlistTopBase;  //songlistTop置为基准线位置
+        this.BScroll.enable();  //BScroll为可用
+        //this.BScroll.refresh();
       } else if (this.songlistTop <= 100 && this.SListScrollTop <= 0) {
-        //songlistTop小于等于100px,切卷曲距离小于等于0
-        this.songlistTop = 100; //songlistTop置为100px
-        this.BScroll.enable(); //BScroll为可用
+        //songlistTop小于等于100px,且卷曲距离小于等于0
+        this.songlistTop = 100;   //songlistTop置为100px
+        this.BScroll.enable();  //BScroll为可用
+        this.BScroll.refresh();
       } else {
         //进入其他情况时
         this.SListScrollTop = 0; //SListScrollTop置为0

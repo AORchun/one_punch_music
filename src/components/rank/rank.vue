@@ -2,7 +2,7 @@
   <div class="theContainer">
     <div class='rankHeader'>QQ音乐巅峰榜</div>
     <div class='itemBox' v-for='item in hotLocalList' :key='item.topID'>
-      <div class='imgBox'>
+      <div class='imgBox' @click='showSongList(item.topID,item.update_key,"top",item.pic_v12)'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -11,7 +11,7 @@
     </div>
     <div class='rankHeader'>全球榜</div>
     <div class='itemBox' v-for='item in hotGlobalList' :key='item.topID'>
-      <div class='imgBox'>
+      <div class='imgBox' @click='showSongList(item.topID,item.update_key,"global",item.pic_v12)'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -19,7 +19,7 @@
       </ol>
     </div>
     <transition name='fRightslide'> 
-       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList'></songlist>
+       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :topId='topId' :update='update' :reqType='type' :imgTop='imgTop'></songlist>
     </transition> 
   </div>
 </template>
@@ -32,7 +32,11 @@ export default {
   props: {},
   data() {
     return {
-      isShowSongList: true
+      isShowSongList: false,
+      topId:null,
+      update:null,
+      type:null,
+      imgTop:null
     };
   },
   created: function() {
@@ -42,6 +46,13 @@ export default {
     turnOffSongList: function() {
       console.log("2222");
       this.isShowSongList = false;
+    },
+    showSongList:function(id,date,type,imgTop){
+      this.isShowSongList=true;
+      this.topId=id;
+      this.update=date;
+      this.type=type;
+      this.imgTop=imgTop;
     }
   },
   computed: {
