@@ -481,7 +481,7 @@ function handleArr(arr) {
             arrRtn.push(obj);
         }
     }
-    console.log(arrRtn)
+    //console.log(arrRtn)
     return arrRtn;
 }
 

@@ -23,7 +23,7 @@
     <div class='bsContain'>
         <h4>热门歌单</h4>
         <div class='broadcasting_station'>
-          <a href="javascript:void(0)" v-for='(radio,index) in arr.songList' :key='index'>
+          <a href="javascript:void(0)" v-for='(radio,index) in arr.songList' :key='index' @click='getSonglistFromHot(radio.id)'>
             <div class='imgBox'>
               <img :src="radio.picUrl" alt="" width="100%" height='100%'>
               <i class='playBtn'><i></i></i>
@@ -61,7 +61,7 @@ export default {
     copyRight
   },
   computed:{
-    arr(){
+    arr() {
       return this.$store.state.arr
     },
     swiperSlides(){
@@ -81,7 +81,17 @@ export default {
   mounted(){
     console.log('moumted '+new Date())
   },
-  methods: {}
+  methods: {
+    getSonglistFromHot:function(id){
+      console.log(id)
+      var that=this;
+      axios.get('http://127.0.0.1:3000/getSonglistFromHot?id='+id).then(function(response){
+        console.log(response)
+      }).catch(function(error){
+        console.log(error)
+      })
+    }
+  }
 };
 </script>
 

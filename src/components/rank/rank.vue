@@ -1,8 +1,8 @@
 <template>
   <div class="theContainer">
     <div class='rankHeader'>QQ音乐巅峰榜</div>
-    <div class='itemBox' v-for='item in hotLocalList' :key='item.topID'>
-      <div class='imgBox' @click='showSongList(item.topID,item.update_key,"top",item.pic_v12)'>
+    <div class='itemBox' v-for='item in hotLocalList' :key='item.topID'  @click='showSongList(item.topID,item.update_key,"top",item.pic_v12)'>
+      <div class='imgBox'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -10,8 +10,8 @@
       </ol>
     </div>
     <div class='rankHeader'>全球榜</div>
-    <div class='itemBox' v-for='item in hotGlobalList' :key='item.topID'>
-      <div class='imgBox' @click='showSongList(item.topID,item.update_key,"global",item.pic_v12)'>
+    <div class='itemBox' v-for='item in hotGlobalList' :key='item.topID'  @click='showSongList(item.topID,item.update_key,"global",item.pic_v12)'>
+      <div class='imgBox'>
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
@@ -19,7 +19,18 @@
       </ol>
     </div>
     <transition name='fRightslide'> 
-       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :topId='topId' :update='update' :reqType='type' :imgTop='imgTop'></songlist>
+       <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :imgTop='imgTop'>
+         <span slot='title'>歌单 {{songList.songlist.length}}首</span>
+         <ul class='slotContent' slot='list'>
+              <li class='songItem' v-for='(item,index) in songList.songlist' :key='item.data.songid'>
+                <span>{{index+1}}</span>
+                 <div class='songInfo'>
+                  <p>{{item.data.songname}}</p>
+                  <p>{{item.data.singer[0].name}}</p>
+                </div>
+              </li>
+            </ul>
+       </songlist>
     </transition> 
   </div>
 </template>
@@ -36,7 +47,8 @@ export default {
       topId:null,
       update:null,
       type:null,
-      imgTop:null
+      imgTop:null,
+      songList:''
     };
   },
   created: function() {
@@ -44,15 +56,21 @@ export default {
   },
   methods: {
     turnOffSongList: function() {
-      console.log("2222");
+      //console.log("2222");
       this.isShowSongList = false;
     },
     showSongList:function(id,date,type,imgTop){
-      this.isShowSongList=true;
       this.topId=id;
       this.update=date;
       this.type=type;
       this.imgTop=imgTop;
+      var that=this
+      axios.get('http://127.0.0.1:3000/songlist?topid='+id+"&update="+date+"&type="+type).then(function (response) {
+          that.songList=response.data;
+          that.isShowSongList=true;
+        }).catch(function (error) {
+          console.log(error);
+        })
     }
   },
   computed: {
@@ -115,4 +133,30 @@ export default {
   transition: transform 0.5s
 .fRightslide-enter, .fRightslide-leave-to
   transform: translate(100%, 0)
+ul.slotContent
+  .songItem
+    display: flex
+    align-items: center
+    height: 40px
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+    padding: 5px 0
+    span
+      flex: 0 0 10%
+      line-height: 40px
+      text-align: center
+    .songInfo
+      align-self: stretch
+      p
+        height: 50%
+        line-height: 20px
+        font-size: 12px
+        flex: 0 0 80%
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+      p:last-child
+        color: $color-text-d
+#funckslot
+  color:red
+  font-size:20px
 </style>

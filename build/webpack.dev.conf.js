@@ -137,9 +137,9 @@ const keywordparams = {
   needNewCode: 0,
 }
 app.get('/keyword', function (req, res) {
-  var params = Object.assign({}, keywordparams, {key:req.query.key})
+  var params = Object.assign({}, keywordparams, { key: req.query.key })
   console.log(req.query.key);
-  axios.get('https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg', { header, params}).then(function (response) {
+  axios.get('https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg', { header, params }).then(function (response) {
     var result = response.data;
     function SmartboxKeysCallbackmod_search815(data) {
       res.send(data.data);
@@ -177,13 +177,13 @@ const inputParams = {
 }
 app.get('/inputword', function (req, res) {
   let params = Object.assign({}, inputParams, { w: req.query.k });
-  axios.get('https://c.y.qq.com/soso/fcgi-bin/client_search_cp', { header, params }).then(function (response) { 
+  axios.get('https://c.y.qq.com/soso/fcgi-bin/client_search_cp', { header, params }).then(function (response) {
     let result = response.data;
     function MusicJsonCallback14644978969788136(data) {
       res.send(data)
-     }
+    }
     eval(result)
-  }).catch(function (errror) { 
+  }).catch(function (errror) {
     res.send(errror)
   })
 })
@@ -210,13 +210,77 @@ const songlistHeader = {
 }
 app.get('/songlist', function (req, res) {
   //console.log(req.query);
-  let params = Object.assign({}, rankSongListParams, {date:req.query.update,topid:req.query.topid,type:req.query.type});
+  let params = Object.assign({}, rankSongListParams, { date: req.query.update, topid: req.query.topid, type: req.query.type });
   let header = Object.assign({}, songlistHeader, { referer: "https://y.qq.com/n/yqq/toplist/" + req.query.topid + '.html' });
-  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg', { header, params }).then(function (response) { 
+  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg', { header, params }).then(function (response) {
     let result = response.data;
     res.send(result);
-  }).catch(function (errror) { 
+  }).catch(function (errror) {
     res.send(errror)
+  })
+})
+
+//点击歌手列表 获取相应的歌单列表
+const songlistFromsingeridParams = {
+  g_tk: 5381,
+  loginUin: 0,
+  hostUin: 0,
+  format: 'json',
+  inCharset: 'utf8',
+  outCharset: 'utf-8',
+  notice: 0,
+  platform: 'yqq.json',
+  needNewCode: 0,
+  order: 'listen',
+  begin: 0,
+  num: 30,
+  songstatus: 1,
+}
+app.get('/songlistfromsingerid', function (req, res) {
+  let params = Object.assign({}, songlistFromsingeridParams, { singermid: req.query.singer_mid });
+  let header = Object.assign({}, songlistHeader, { 'origin': 'https://y.qq.com/n/yqq/singer/' + req.query.singer_mid + '.html' });
+  axios.get('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', { header, params }).then(function (response) {
+    let result = response.data;
+    res.send(result);
+  }).catch(function (error) {
+    res.send(error);
+  })
+})
+
+//点击首页热门分类的时候 获取相应的歌单
+const getSonglistFromHotParams = {
+  g_tk: 5381,
+  uin: 0,
+  format: 'json',
+  inCharset: 'utf-8',
+  outCharset: 'utf-8',
+  notice: 0,
+  platform: 'h5',
+  needNewCode: 1,
+  new_format: 1,
+  pic: 500,
+  type: 1,
+  json: 1,
+  utf8: 1,
+  onlysong: 0,
+  picmid: 1,
+  nosign: 1,
+  song_begin: 0,
+  song_num: 15
+}
+app.get('/getSonglistFromHot', function (req, res) {
+  var reqParam=req.query
+  let params = Object.assign({}, getSonglistFromHotParams, { disstid: Number(reqParam.id), _: new Date().getTime() });
+  let header = Object.assign({}, songlistHeader, { "referer": 'https://y.qq.com/w/taoge.html?ADTAG=myqq&from=myqq&channel=10007100&id=' + reqParam.id });
+  console.log('https://y.qq.com/w/taoge.html?ADTAG=myqq&from=myqq&channel=10007100&id=' + reqParam.id);
+  //console.log(params);
+  //console.log(header);
+  axios.get('https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg', { header,params}).then(function (response) {
+    //let result = response.data;
+    console.log(response.data)
+    //res.send(result); 
+  }).catch(function (error) {
+    //res.send(error)
   })
 })
 

@@ -36,7 +36,7 @@
         <div class='outer'>
             <div class="inner">
                 <ul>
-                    <li></li>
+                    <li id='slot' onclick='slot'></li>
                     <li></li>
                     <li></li>
                     <li></li>
@@ -47,5 +47,13 @@
                 </ul>
             </div>
         </div>
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+            var slot=document.querySelector('#slot');
+            function solt(){
+                console.log(123456);
+            }
+           // slot.addEventListener('click',function(){console.log(111)});
+        </script>
 </body>
 </html>
