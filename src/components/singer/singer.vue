@@ -17,7 +17,7 @@
       <songlist  v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :imgTop='imgTop'>
         <span slot='title' class='songlist-title'>{{songsList.singer_name}} {{songsList.list.length}}首</span>
         <ul slot='list' class='songlist-items'>
-          <li class="songItem" v-for='(item,index) in songsList.list' :key='item.musicData.songid'>
+          <li class="songItem" v-for='(item,index) in songsList.list' :key='item.musicData.songid' @click='addNewOne(item)'>
             <span class='songIndex'>{{index+1}}</span>
             <span class='songName'>{{item.musicData.songname}}</span>
             <span class='singer'>{{(item.musicData.singer)[0].name}}</span>
@@ -33,6 +33,7 @@
 import axios from "axios";
 import Bscroll from "better-scroll";
 import songlist from "components/songlist/songlist";
+
 
 export default {
   props: {},
@@ -50,6 +51,10 @@ export default {
     songlist
   },
   methods: {
+    addNewOne(item){
+      item.imgTop=this.imgTop
+     this.$store.commit('addNewOne',item);
+    },
     turnOffSongList:function(){
       this.isShowSongList=false;
     },

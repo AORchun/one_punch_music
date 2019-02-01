@@ -8,17 +8,21 @@
     <keep-alive>
       <router-view/>
     </keep-alive>
+    <footerBx></footerBx>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import MHeader from '@/components/header/header'
 import tab from 'components/tab/tab'
+import footerBx from '@/components/playBox/playBox'
+
 export default {
   name: 'App',
   components:{
     MHeader,
-    tab
+    tab,
+    footerBx
   }
 };
 </script>

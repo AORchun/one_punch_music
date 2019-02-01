@@ -22,7 +22,7 @@
        <songlist v-on:closeComponent='turnOffSongList'  v-if='isShowSongList' :imgTop='imgTop'>
          <span slot='title'>歌单 {{songList.songlist.length}}首</span>
          <ul class='slotContent' slot='list'>
-              <li class='songItem' v-for='(item,index) in songList.songlist' :key='item.data.songid'>
+              <li class='songItem' v-for='(item,index) in songList.songlist' :key='item.data.songid' @click='addNewOne(item)'>
                 <span>{{index+1}}</span>
                  <div class='songInfo'>
                   <p>{{item.data.songname}}</p>
@@ -55,6 +55,10 @@ export default {
     this.$store.dispatch("getRankList");
   },
   methods: {
+    addNewOne:function(item){
+      item.imgTop=this.imgTop;
+      this.$store.commit('addNewOne',item);
+    },
     turnOffSongList: function() {
       //console.log("2222");
       this.isShowSongList = false;

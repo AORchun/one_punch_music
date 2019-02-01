@@ -284,6 +284,37 @@ app.get('/getSonglistFromHot', function (req, res) {
   })
 })
 
+
+//获取VKEY
+const getVkeyParams = {
+  '-': 'getplaysongvkey23616801045348113',
+g_tk: 5381,
+loginUin: 0,
+hostUin: 0,
+format: 'json',
+inCharset: 'utf8',
+outCharset: 'utf-8',
+notice: 0,
+platform: 'yqq.json',
+needNewCode: 0,
+}
+
+app.get('/getVkey', function (req, res) {
+  var reqParam=req.query
+  let params = Object.assign({}, getVkeyParams, { data: {"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"8860525308","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"8860525308","songmid":[reqParam.songmid],"songtype":[0],"uin":"0","loginflag":1,"platform":"20"}},"comm":{"uin":0,"format":"json","ct":24,"cv":0}}});
+  let header = Object.assign({}, songlistHeader, { "referer": 'https://y.qq.com/portal/player.html'});
+  console.log( reqParam.songmid);
+  //console.log(params);
+  //console.log(header);
+  axios.get('https://u.y.qq.com/cgi-bin/musicu.fcg', { header,params}).then(function (response) {
+    let result = response.data;
+    res.send(response.data.req_0)
+    //res.send(result); 
+  }).catch(function (error) {
+    res.send(error)
+  })
+})
+
 const server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;

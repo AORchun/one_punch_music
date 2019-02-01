@@ -32,7 +32,19 @@ var store = new Vuex.Store({
     globalList: [],
 
     //搜索历史
-    searchHistory:[]
+    searchHistory: [],
+    
+    //当前播放列表
+    playSongList: [],
+    
+    //当前播放的index
+    playingIndex: 0,
+    
+    //当前播放的JSON数据
+    playingSong:'',
+    
+    //当前的播放模式: 0 顺序播放 1 随机播放 2 单曲循环 
+    playModel:0
   },
   getters: {
     
@@ -78,7 +90,33 @@ var store = new Vuex.Store({
     rmvAllSearchHistory: function (state) {
       state.searchHistory = [];
       sessionStorage.setItem('onePunch_searchHistory',state.searchHistory)
-     }
+    },
+    
+    //向当前播放列表中添加
+    addNewOne: function (state,item) { 
+      state.playSongList.push(item);
+      state.playingSong = item;
+      state.playingIndex=state.playSongList.length-1>=0?state.playSongList.length-1:0
+    },
+    //播放列表init
+
+    init: function (state) {
+      if (state.playSongList.length) { 
+        state.playingIndex = 0;
+        state.playingSong = state.playSongList[0];
+      }
+    },
+    //播放下一条歌曲
+    playNext: function (state) { 
+      state.playingIndex += 1;
+      if (state.playingIndex == state.playSongList.length) { 
+        state.playingIndex=0
+      }
+      //need check play model
+      state.playingSong = state.playSongList[state.playingIndex];
+      
+    }
+
   },
   actions: {
     //获取首页的数据，包括slider和推荐列表,并commit
