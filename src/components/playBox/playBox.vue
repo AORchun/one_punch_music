@@ -1,28 +1,51 @@
 <template>
   <div class='footerBox'>
-      <div class="simpleControler" v-if='playSongList.length'>
-           <audio autoplay controls :src='playingSrc' @ended="playNext()">
+      <div class="progressBar"  :style="{width: 'calc(100vw * '+ playProgress +')'}"></div>
+      <div class="simpleControler">
+           <audio autoplay controls :src='playingSrc'>
             </audio>
-            <div class='imgBx'>
-                <img :src="playingSong.imgTop" alt="">
-            </div>
-            <div class='playSong'>
-                <p>{{playingInfo.songname}}</p>
-                <p><span v-for="(item,index) in playingInfo.singer" :key='item.name'><span v-if='index>0'>/</span>{{item.name}}</span></p>
-            </div>
-            <div class="togglePlay" :class='{active:isPaused}' @click='togglePlay'>
-            </div>
-          <div class="listBtn" @click='isShow=!isShow'></div>
+            <template v-if='playingInfo'>
+                <div class='imgBx'>
+                    <img :src="imgTop" alt="">
+                </div>
+                <div class='playSong'>
+                    <p>{{playingInfo.songname}}</p>
+                    <p><span v-for="(item,index) in playingInfo.singer" :key='item.name'><span v-if='index>0'>/</span>{{item.name}}</span></p>
+                </div>
+                <div class="togglePlay" :class='{active:isPaused}' @click='togglePlay'>
+                </div>
+                <div class="listBtn" @click='isShow=!isShow'></div>
+            </template>
       </div>
       <div class="playSonglistMask" v-if='isShow' @click.self='isShow=!isShow'>
           <div class="playSonglistPoxBx">
-              
+              <div class='playSonglistTitle'>
+                  <span v-if='playModel==0'></span>
+                  <span>播放列表</span>
+                  <span>共{{playSongList.length}}首</span>
+              </div>
+              <div v-for='(song,index) in playSongList' :key='index' class='songListItemBx'>
+                    <div @click='playSelected(index)' class='songListItem'>
+                        <span v-if='index == playingIndex' class='indexBox'><i></i></span>
+                        <span v-else class='indexBox'>{{index+1}}</span>
+                        <span class='songName'>{{song.data?song.data.songname :　song.musicData.songname}} -</span>
+                        <span class='singerName'>
+                            <span v-for='(singer,idx) in (song.data?song.data.singer :　song.musicData.singer)' :key='singer.name'>
+                                <span v-if='idx>0'>/</span>
+                                {{singer.name}}
+                            </span>
+                        </span>
+                    </div>
+                    <div @click='removeSelect(index)' class='removeBox'>
+                        X
+                    </div>
+              </div>
           </div>
       </div>
   </div>
 </template>
 <script type='text/ecmascript-6'>
-import {mapState} from 'vuex';
+import {mapGetters,mapState} from 'vuex';
 import axios from 'axios';
 export default{
     data(){
@@ -31,21 +54,79 @@ export default{
         isPaused:false,
         audio:'',
         playingSrc:'',
-        playingInfo:''
+        playingInfo:'',
+        playProgress:0,
+        songDuration:''
       }
     },
     components:{
-
-        },
+        
+    },
     created(){
         this.$store.commit('init')
-        },
+    },
     mounted(){
-       
+       this.audio=document.querySelector('audio');
+        var that =this;
+        var countTimer;
+        this.audio.addEventListener('play',function(){
+            console.log(that.audio.duration);
+        },false)
+       this.audio.addEventListener('ended',function(){
+        clearInterval(countTimer);
+        countTimer=null;
+        that.playNext(1);
+       },false)
+       this.audio.addEventListener('playing',function(){
+          that.songDuration=that.audio.duration;
+          countTimer=setInterval(function(){
+              that.playProgress=(that.audio.currentTime / that.songDuration).toFixed(2);
+          },1000)
+       },false)
     },
     methods:{
-        playNext(){
-            this.$store.commit('playNext')
+        nextIndex(num){
+            //num:-1是上一首，1是下一首
+           var model= this.playModel;
+           var index= this.playingIndex;
+           var list = this.playSongList.length
+           switch(model){
+               case 0:index+=num;
+               break;
+               case 1:index=Math.floor(Math.random()*list);
+               break;
+               default:;
+               break;
+           }
+           index=this.checkIndex(index);
+           return index;
+        },
+        checkIndex(num){
+            var index=num
+            if(index<0){
+                index=this.playSongList.length-1
+            }
+            if(index>=this.playSongList.length){
+                index=0;
+            }
+            return index;
+        },
+
+        playNext(num){
+            //播放下一首或者上一首，num为-1或者1;
+            console.log('song is ended!')
+            this.$store.commit('playIndex',this.nextIndex(num));
+        },
+        playSelected(index){
+            //播放指定index的歌曲
+            var index=index;
+            if(index == this.playingIndex ) return ;
+            index=this.checkIndex(index);
+            this.$store.commit('playIndex',index);
+        },
+        removeSelect(index){
+            if(index==this.playingIndex)this.playSelected(index+1);
+            this.$store.commit('removeIndex',index);
         },
         togglePlay(){
             if(!this.audio){
@@ -66,31 +147,48 @@ export default{
             this.audio.pause();
         }
     },
-    computed:mapState([
-        'playSongList',
-        'playModel',
-        'playingSong',
-        'playingIndex'
-    ]),
+    computed:{
+        ...mapState([
+            'playSongList',
+            'playModel',
+            'playingIndex'
+        ]),
+        isLoop(){
+            if(this.model==3){
+                this.audio.setAttribute('loop')
+            }else{
+                this.audio.removeAttribute('loop')
+            }
+        },
+        imgTop(){
+            return this.playSongList[this.playingIndex].imgTop
+        }
+    },
     watch:{
-        playSongList:function(){
-            var that = this
-            var songmid
-            if(this.playingSong.musicData){
-                this.playingInfo=this.playingSong.musicData
-            }else if(this.playingSong.data){
-                this.playingInfo=this.playingSong.data
+        playingIndex:function(){
+            if(this.playingIndex<0){
+                return
+            }
+            var that = this;
+            var index=this.playingIndex;
+            var songmid;
+             this.playingInfo=this.playSongList[index].musicData||this.playSongList[index].data
+            if(this.playSongList[index].playurl){
+                this.playingSrc=this.playSongList[index].playurl;
+                return
             }
             songmid=this.playingInfo.songmid;
             console.log(songmid);
             axios.get('http://127.0.0.1:3000/getVkey?songmid='+songmid).then(function(response){
                 var result=response.data.data
-                console.log(result);
+                //console.log(result);
                 if(!result.midurlinfo[0].purl){
                     console.log('资源已经不在了~~');
                     return
                 }
-                that.playingSrc='http://113.96.98.152/amobile.music.tc.qq.com/'+result.midurlinfo[0].purl
+                that.playingSrc='http://113.96.98.152/amobile.music.tc.qq.com/'+result.midurlinfo[0].purl;
+                that.$store.commit('addPlayUrl',
+                {index:that.playingIndex,url:that.playingSrc});
             }).catch(function(error){
                 console.log(error)
             })
@@ -105,8 +203,14 @@ export default{
         bottom:0;
         width:100%;
         height:50px;
-        background:#222
-        border-top:1px solid rgba(255,205,50,0.5);
+        background:#222;
+        border-top:1px solid rgba(255,255,255,0.06);
+        .progressBar
+            position:absolute;
+            top:0;
+            left:0;
+            height:1px;
+            background:rgba(255,205,0,0.35)
         .simpleControler
             width:100%;
             display:flex;
@@ -168,7 +272,49 @@ export default{
                 background:#222;
                 border-top-left-radius:10px;
                 border-top-right-radius:10px;
-                overflow:hidden;
+                overflow-x:hidden;
+                overflow-y:auto;
+                .playSonglistTitle
+                    display:flex;
+                    height:45px;
+                    line-height:45px;
+                    padding:0 23px;
+                    color:rgba(255,255,255,0.6);
+                    border-bottom:1px solid rgba(255,205,0,0.35)
+                .songListItemBx
+                    display:flex;
+                    align-items:stretch;
+                    height:45px;
+                    border-bottom:1px solid rgba(255,255,255,0.3);
+                    .songListItem
+                        display:flex;
+                        flex:1;
+                        .indexBox
+                            width:45px;
+                            display:flex;
+                            justify-content:center
+                            align-items:center
+                            font-size:16px
+                            color:rgba(255,255,255,0.6)
+                            i
+                                display:block;
+                                width:0;
+                                height:0;
+                                border-top:3px solid transparent;
+                                border-right:3px solid transparent;
+                                border-bottom:3px solid transparent;
+                                border-left:3px solid $color-theme;
+                        .songName,.singerName
+                            font-size:14px;
+                            color:rgba(255,255,255,0.75)
+                            line-height:45px;
+                    .removeBox
+                        flex:0 0 45px;
+                        width:45px;
+                        line-height:45px;
+                        text-align:center
+                        font-size:18px
+                        color:rgba(255,255,255,0.4) 
 
 </style>
 

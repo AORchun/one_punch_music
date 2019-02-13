@@ -113,7 +113,7 @@ export default {
     },
     touchend: function(event) {},
     closeSelf: function() {
-      console.log("111");
+      //console.log("111");
       this.$emit("closeComponent");
     }
   }

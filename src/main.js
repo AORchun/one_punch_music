@@ -38,15 +38,17 @@ var store = new Vuex.Store({
     playSongList: [],
     
     //当前播放的index
-    playingIndex: 0,
-    
-    //当前播放的JSON数据
-    playingSong:'',
+    playingIndex: -1,
     
     //当前的播放模式: 0 顺序播放 1 随机播放 2 单曲循环 
     playModel:0
   },
   getters: {
+    
+    // //当前播放的JSON数据
+    // playingSong: function (state) {
+    //   return state.playSongList[state.playingIndex];
+    // }
     
   },
   mutations: {
@@ -95,28 +97,34 @@ var store = new Vuex.Store({
     //向当前播放列表中添加
     addNewOne: function (state,item) { 
       state.playSongList.push(item);
-      state.playingSong = item;
-      state.playingIndex=state.playSongList.length-1>=0?state.playSongList.length-1:0
+      state.playingIndex = state.playSongList.length - 1;
     },
     //播放列表init
 
     init: function (state) {
       if (state.playSongList.length) { 
         state.playingIndex = 0;
-        state.playingSong = state.playSongList[0];
+       // state.playingSong = state.playSongList[0];
       }
     },
-    //播放下一条歌曲
-    playNext: function (state) { 
-      state.playingIndex += 1;
-      if (state.playingIndex == state.playSongList.length) { 
-        state.playingIndex=0
-      }
-      //need check play model
-      state.playingSong = state.playSongList[state.playingIndex];
-      
-    }
+    
+    //播放指定的曲目歌曲
+    playIndex: function (state,index) { 
+      state.playingIndex = index;
+    },
 
+    //向当前的播放歌曲添加请求回来的playurl
+    addPlayUrl: function (state, payload) {
+      state.playSongList[payload.index].playurl=payload.url
+    },
+    
+    //移除指定index的歌曲
+    removeIndex: function (state,index) { 
+      state.playSongList.splice(index, 1);
+      if (state.playSongList.length == 0) { 
+        state.playingIndex = -1;
+      }
+    }
   },
   actions: {
     //获取首页的数据，包括slider和推荐列表,并commit
