@@ -57,6 +57,7 @@ export default {
   methods: {
     addNewOne:function(item){
       item.imgTop=this.imgTop;
+      item.musicData=item.data;
       this.$store.commit('addNewOne',item);
     },
     turnOffSongList: function() {

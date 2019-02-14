@@ -8,7 +8,7 @@
                 <div class='imgBx'>
                     <img :src="imgTop" alt="">
                 </div>
-                <div class='playSong'>
+                <div class='playSong' @click='isPanel=!isPanel'>
                     <p>{{playingInfo.songname}}</p>
                     <p><span v-for="(item,index) in playingInfo.singer" :key='item.name'><span v-if='index>0'>/</span>{{item.name}}</span></p>
                 </div>
@@ -28,9 +28,9 @@
                     <div @click='playSelected(index)' class='songListItem'>
                         <span v-if='index == playingIndex' class='indexBox'><i></i></span>
                         <span v-else class='indexBox'>{{index+1}}</span>
-                        <span class='songName'>{{song.data?song.data.songname :　song.musicData.songname}} -</span>
+                        <span class='songName'>{{song.musicData.songname}} -</span>
                         <span class='singerName'>
-                            <span v-for='(singer,idx) in (song.data?song.data.singer :　song.musicData.singer)' :key='singer.name'>
+                            <span v-for='(singer,idx) in song.musicData.singer' :key='singer.name'>
                                 <span v-if='idx>0'>/</span>
                                 {{singer.name}}
                             </span>
@@ -39,6 +39,30 @@
                     <div @click='removeSelect(index)' class='removeBox'>
                         X
                     </div>
+              </div>
+          </div>
+      </div>
+      <div class="playingPanel" v-if='isPanel'>
+          <div class="topPart">
+                <div class='comeOut'>
+                    <span class='rightArrow' @click='isPanel=!isPanel'></span>
+                </div>
+                <div class="lyricBx">
+
+                </div>
+          </div>
+          <div class='bottomPart'>
+              <div class="progressBx">
+                  <div class='progressBg'></div>
+                  <div class="progressBar"></div>
+                  <span class='progressBarHead'></span>
+              </div>
+              <div class='panelControlBox'>
+                  <span class='modelChangeBtn ' :class="[playModelNow]" @click='toggleModel'></span>
+                  <span class='previousBtn' @click='nextIndex(-1)'></span>
+                  <span class='playToggleBtn' :class="{paused:!isPaused,playing:isPaused}" @click='togglePlay'></span>
+                  <span class='nextBtn' @click='nextIndex(1)'></span>
+                  <span class='listBtn' @click='isShow=!isShow' ></span>
               </div>
           </div>
       </div>
@@ -56,7 +80,10 @@ export default{
         playingSrc:'',
         playingInfo:'',
         playProgress:0,
-        songDuration:''
+        songDuration:'',
+        isPanel:false,
+        playModelNow:'model0',
+        imgTop:''
       }
     },
     components:{
@@ -75,6 +102,10 @@ export default{
        this.audio.addEventListener('ended',function(){
         clearInterval(countTimer);
         countTimer=null;
+        if(that.playModel==3){
+            that.audio.play();
+            return
+        }
         that.playNext(1);
        },false)
        this.audio.addEventListener('playing',function(){
@@ -85,17 +116,26 @@ export default{
        },false)
     },
     methods:{
+        toggleModel(){
+            var model=this.playModel;
+            switch(model){
+                case 0: this.$store.commit('changeModel',1);
+                break;
+                case 1: this.$store.commit('changeModel',2);
+                break;
+                case 2: this.$store.commit('changeModel',0);
+                break;
+            }
+        },
         nextIndex(num){
             //num:-1是上一首，1是下一首
            var model= this.playModel;
            var index= this.playingIndex;
            var list = this.playSongList.length
            switch(model){
-               case 0:index+=num;
-               break;
                case 1:index=Math.floor(Math.random()*list);
                break;
-               default:;
+               default:index+=num;;
                break;
            }
            index=this.checkIndex(index);
@@ -126,6 +166,9 @@ export default{
         },
         removeSelect(index){
             if(index==this.playingIndex)this.playSelected(index+1);
+            if(index<this.playingIndex){
+                this.$store.commit('modifyIndex');
+            }
             this.$store.commit('removeIndex',index);
         },
         togglePlay(){
@@ -155,25 +198,32 @@ export default{
         ]),
         isLoop(){
             if(this.model==3){
-                this.audio.setAttribute('loop')
+                this.audio.setAttribute('loop','loop')
             }else{
                 this.audio.removeAttribute('loop')
             }
-        },
-        imgTop(){
-            return this.playSongList[this.playingIndex].imgTop
         }
+        
     },
     watch:{
+        playModel:function(){
+            this.playModelNow='model'+this.playModel;
+        },
         playingIndex:function(){
             if(this.playingIndex<0){
                 return
             }
+            this.imgTop=this.playSongList[this.playingIndex].imgTop;
             var that = this;
             var index=this.playingIndex;
             var songmid;
-             this.playingInfo=this.playSongList[index].musicData||this.playSongList[index].data
+             console.log(index);
+             this.playingInfo=this.playSongList[index].musicData
             if(this.playSongList[index].playurl){
+                if(this.playSongList[index].playurl.includes('资源不在了')){
+                    this.playNext(1);
+                    return;
+                }
                 this.playingSrc=this.playSongList[index].playurl;
                 return
             }
@@ -183,7 +233,8 @@ export default{
                 var result=response.data.data
                 //console.log(result);
                 if(!result.midurlinfo[0].purl){
-                    console.log('资源已经不在了~~');
+                   that.$store.commit('addPlayUrl',
+                {index:that.playingIndex,url:'资源不在了！'});
                     return
                 }
                 that.playingSrc='http://113.96.98.152/amobile.music.tc.qq.com/'+result.midurlinfo[0].purl;
@@ -205,6 +256,7 @@ export default{
         height:50px;
         background:#222;
         border-top:1px solid rgba(255,255,255,0.06);
+        z-index:15
         .progressBar
             position:absolute;
             top:0;
@@ -264,6 +316,7 @@ export default{
             background:rgba(0,0,0,0.6);
             left:0;
             top:0;
+            z-index:35
             .playSonglistPoxBx
                 position:absolute;
                 bottom:0;
@@ -315,6 +368,98 @@ export default{
                         text-align:center
                         font-size:18px
                         color:rgba(255,255,255,0.4) 
+        .playingPanel
+            position:fixed;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+            background:rgba(0,0,0,0.8);
+            z-index:30;
+            display:flex;
+            flex-flow:nowrap column;
+            .topPart
+                flex:1
+                height:calc(100vh - 100px)
+                width:100%
+                overflow:hidden
+                .comeOut
+                    height:45px;
+                    .rightArrow
+                        height:45px;
+                        width:45px
+                        display:inline-block;
+                        background:url('fanhui.png') no-repeat center center
+                        background-size:auto 80%
+                .lyricBx
+                    width:100%;
+                    height:calc(100% - 45px);
+                    overflow:hidden;
+            .bottomPart
+                flex:0 0 100px;
+                height:100px
+                width:100%
+                box-sizing:border-box
+                padding:0 10%;
+                .progressBx
+                    position:relative
+                    width:100%
+                    height:10px
+                    .progressBg
+                        width:100%
+                        height:4px
+                        position:absolute
+                        top:3px
+                        background:rgba(255,255,255,0.6)
+                        left:0
+                    .progressBar
+                        position:absolute;
+                        left:0;
+                        top:3px;
+                        height:4px;
+                        background:rgba(255,205,0,0.8)
+                    .progressBarHead
+                        position:absolute;
+                        width:10px
+                        height:10px;
+                        background:#fff
+                        border-radius:50%
+                .panelControlBox
+                    height:90px;
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    span
+                        width:45px;
+                        height:45px;
+                        border:red 1px solid 
+                    .previousBtn
+                        background:url('previous_one.png') no-repeat center center
+                        background-size:80%;
+                    .nextBtn
+                        background:url('next_one.png') no-repeat center center
+                        background-size:80%
+                    .listBtn
+                        background:url('music_list.png') no-repeat center center;
+                        background-size:80%
+                    span.model0
+                        background:url('liebiaoxunhuan.png') no-repeat center center;
+                        background-size:80%
+                    span.model1
+                        background:url('suijibofang.png') no-repeat center center;
+                        background-size:80%
+                    span.model2
+                        background:url('danquxunhuan.png') no-repeat center center;
+                        background-size:80%
+                    span.paused
+                        background:url('suspend_icon.png') no-repeat center center;
+                        background-size:80%
+                    span.playing
+                        background:url('bofang.png') no-repeat center center;
+                        background-size:80%
+
+
+
 
 </style>
 

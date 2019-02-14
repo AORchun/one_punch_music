@@ -124,6 +124,15 @@ var store = new Vuex.Store({
       if (state.playSongList.length == 0) { 
         state.playingIndex = -1;
       }
+    },
+
+    //更改为指定的playmodel
+    changeModel(state, payload) { 
+      state.playModel=payload
+    },
+    //删除指针前面的项目时，会导致指针混乱，需要调整指针到正确的位置
+    modifyIndex(state) { 
+      state.playingIndex -= 1;
     }
   },
   actions: {
