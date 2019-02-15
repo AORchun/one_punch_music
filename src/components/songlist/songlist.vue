@@ -87,6 +87,8 @@ export default {
 
         if(!this.BScroll.enabled){
           this.songlistTop = 100;   //songlistTop置为100px
+          this.pointLog =
+        event.touches[0].clientY - this.$refs.scrollContainer.offsetTop;
           this.BScroll.scrollTo(0,0,0);
           this.BScroll.refresh();
           this.BScroll.enable();  //BScroll为可用

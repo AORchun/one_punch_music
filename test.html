@@ -5,56 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    
     <style>
         *{
             margin:0;
             padding:0;
         }
-        .outer{
-            height:calc(100vh - 500px);
-            width:400px;
-            border:1px solid rgba(47, 255, 193, 0.801);
-            overflow:hidden;
-            margin:auto
+        body{
+            width:100vw;
+            height:100vh;
+            font-size:14px;
         }
-        .inner{
-            width:300px;
-            height:100%;
-            margin:auto;
-            border:1px solid rgba(0, 255, 242, 0.74);
-            overflow:auto
+        .box1{
+            width:100px;
+            height:100px;
+            position:absolute;
+            left:100px;
+            top:100px;
+            border:1px solid blue;
         }
-        li{
-            height:60px;
-            width:100%;
-            background:rgba(128, 0, 0, 0.719);
-            margin:2px 0px;
+        .box2{
+            width:20px;
+            height:20px;
+            position:absolute;
+            top:20px;
+            left:20px;
+            background:red;
         }
     </style>
 </head>
 <body>
-        <div class='outer'>
-            <div class="inner">
-                <ul>
-                    <li id='slot' onclick='slot'></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-        </div>
-        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script>
-            var slot=document.querySelector('#slot');
-            function solt(){
-                console.log(123456);
-            }
-           // ((((((('nothing is impossible')))))))
-           // slot.addEventListener('click',function(){console.log(111)});
-        </script>
+    <div class='box1'>
+        <div class='box2'></div>
+    </div>
+    <script>
+        var bx1=document.querySelector('.box1')
+        var bx2=document.querySelector('.box2')
+        console.log(bx1.offsetLeft,bx1.clientLeft,bx2.offsetLeft,bx2.clientLeft);
+    </script>
 </body>
 </html>

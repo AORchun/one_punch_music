@@ -6,7 +6,9 @@
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
-        <li v-for='(song,index) in item.songlist' :key='song.songid' v-if='index<3' ><p>{{song.songname+" - "+song.singername}}</p></li>
+        <template v-for='(song,index) in item.songlist'>
+          <li  :key='song.songid' v-if='index<3' ><p>{{song.songname+" - "+song.singername}}</p></li>
+        </template>
       </ol>
     </div>
     <div class='rankHeader'>全球榜</div>
@@ -15,7 +17,9 @@
         <img :src="item.pic_v12" alt="LOL!" width='100%' height="100%">
       </div>
       <ol  class='top3Song'>
-        <li v-for='(song,index) in item.songlist' :key='song.songid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
+        <template v-for='(song,index) in item.songlist'>
+          <li :key='song.songid' v-if='index<3'><p>{{song.songname+" - "+song.singername}}</p></li>
+        </template>
       </ol>
     </div>
     <transition name='fRightslide'> 

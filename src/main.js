@@ -95,9 +95,14 @@ var store = new Vuex.Store({
     },
     
     //向当前播放列表中添加
-    addNewOne: function (state,item) { 
-      state.playSongList.push(item);
-      state.playingIndex = state.playSongList.length - 1;
+    addNewOne: function (state, item) { 
+      if (state.playSongList.length < 2) {
+        state.playSongList.push(item);
+        state.playingIndex = state.playSongList.length - 1;
+      } else { 
+        state.playSongList.splice(state.playingIndex+1, 0, item);
+        state.playingIndex += 1;
+      }
     },
     //播放列表init
 

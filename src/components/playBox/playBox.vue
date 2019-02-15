@@ -35,6 +35,7 @@
                                 {{singer.name}}
                             </span>
                         </span>
+                        <span v-if='song.playurl.includes("资源不在")' style='color:red;line-height:45px;padding:0 10px;font-size:12px'>资源不在了！</span>
                     </div>
                     <div @click='removeSelect(index)' class='removeBox'>
                         X
@@ -52,16 +53,17 @@
                 </div>
           </div>
           <div class='bottomPart'>
-              <div class="progressBx">
+              <div class="progressBx" ref='barBx'>
                   <div class='progressBg'></div>
-                  <div class="progressBar"></div>
-                  <span class='progressBarHead'></span>
+                  <div class="progressBar" :style="{width:'calc(100% * ' + playProgress + ')'}"></div>
+                  <span class='progressBarHead' :style="{left:'calc(100%*'+ panelProgress +')'}" @touchstart='dragStart($event)' @touchmove='dragMove($event)' @touchend='dragEnd($event)' ref='header'></span>
+                  <span class='progressTick'>{{currentTime | formateTime}}</span><span class='progressDuration'>{{playSongList[playingIndex].musicData.interval | formateTime }}</span>
               </div>
               <div class='panelControlBox'>
                   <span class='modelChangeBtn ' :class="[playModelNow]" @click='toggleModel'></span>
-                  <span class='previousBtn' @click='nextIndex(-1)'></span>
+                  <span class='previousBtn' @click='playNext(-1)'></span>
                   <span class='playToggleBtn' :class="{paused:!isPaused,playing:isPaused}" @click='togglePlay'></span>
-                  <span class='nextBtn' @click='nextIndex(1)'></span>
+                  <span class='nextBtn' @click='playNext(1)'></span>
                   <span class='listBtn' @click='isShow=!isShow' ></span>
               </div>
           </div>
@@ -73,7 +75,7 @@ import {mapGetters,mapState} from 'vuex';
 import axios from 'axios';
 export default{
     data(){
-      return{  
+        return{  
         isShow:false,
         isPaused:false,
         audio:'',
@@ -83,8 +85,13 @@ export default{
         songDuration:'',
         isPanel:false,
         playModelNow:'model0',
-        imgTop:''
-      }
+        imgTop:'',
+        dragProgress:null,
+        panelProgress:'',
+        currentTime:'',
+        startPoint:'',
+        barWidth:''
+    }
     },
     components:{
         
@@ -93,27 +100,28 @@ export default{
         this.$store.commit('init')
     },
     mounted(){
-       this.audio=document.querySelector('audio');
+        this.audio=document.querySelector('audio');
         var that =this;
         var countTimer;
         this.audio.addEventListener('play',function(){
             console.log(that.audio.duration);
         },false)
-       this.audio.addEventListener('ended',function(){
+        this.audio.addEventListener('ended',function(){
         clearInterval(countTimer);
         countTimer=null;
-        if(that.playModel==3){
+        if(that.playModel==2){
             that.audio.play();
             return
         }
         that.playNext(1);
-       },false)
-       this.audio.addEventListener('playing',function(){
-          that.songDuration=that.audio.duration;
-          countTimer=setInterval(function(){
-              that.playProgress=(that.audio.currentTime / that.songDuration).toFixed(2);
-          },1000)
-       },false)
+        },false)
+        this.audio.addEventListener('playing',function(){
+            that.songDuration=that.audio.duration;
+            countTimer=setInterval(function(){
+                that.currentTime=that.audio.currentTime.toFixed(0);
+                that.playProgress=(that.audio.currentTime / that.songDuration).toFixed(2);
+            },1000)
+        },false)
     },
     methods:{
         toggleModel(){
@@ -129,17 +137,17 @@ export default{
         },
         nextIndex(num){
             //num:-1是上一首，1是下一首
-           var model= this.playModel;
-           var index= this.playingIndex;
-           var list = this.playSongList.length
-           switch(model){
+            var model= this.playModel;
+            var index= this.playingIndex;
+            var list = this.playSongList.length
+            switch(model){
                case 1:index=Math.floor(Math.random()*list);
-               break;
-               default:index+=num;;
-               break;
-           }
-           index=this.checkIndex(index);
-           return index;
+                break;
+                default:index+=num;;
+                break;
+            }
+            index=this.checkIndex(index);
+            return index;
         },
         checkIndex(num){
             var index=num
@@ -155,6 +163,10 @@ export default{
         playNext(num){
             //播放下一首或者上一首，num为-1或者1;
             console.log('song is ended!')
+            if(this.playSongList.length==1){
+                this.audio.play();
+                return
+            }
             this.$store.commit('playIndex',this.nextIndex(num));
         },
         playSelected(index){
@@ -188,6 +200,26 @@ export default{
         },
         pauseAudio(){
             this.audio.pause();
+        },
+        dragStart(event){
+            this.dragProgress=this.panelProgress;
+            this.startPoint=event.touches[0].clientX;
+            if(!this.barWidth){
+                this.barWidth=this.$refs.barBx.offsetWidth
+            }
+        },
+        dragMove(event){
+            var distance=event.touches[0].clientX - this.startPoint;
+            var nowOffsetLeft=this.$refs.header.offsetLeft + distance;
+            var progress=(nowOffsetLeft / this.barWidth).toFixed(2);
+        },
+        dragEnd(event){
+            var distance=event.touches[0].clientX - this.startPoint;
+            if(distance==0)return;
+            var nowOffsetLeft=this.$refs.header.offsetLeft + distance;
+            this.dragProgress=(nowOffsetLeft / this.barWidth).toFixed(2);
+            this.audio.currentTime=(this.duration * this.dragProgress).toFixed(0);
+            this.dragProgress=null;
         }
     },
     computed:{
@@ -217,8 +249,8 @@ export default{
             var that = this;
             var index=this.playingIndex;
             var songmid;
-             console.log(index);
-             this.playingInfo=this.playSongList[index].musicData
+            console.log(index);
+            this.playingInfo=this.playSongList[index].musicData
             if(this.playSongList[index].playurl){
                 if(this.playSongList[index].playurl.includes('资源不在了')){
                     this.playNext(1);
@@ -233,7 +265,7 @@ export default{
                 var result=response.data.data
                 //console.log(result);
                 if(!result.midurlinfo[0].purl){
-                   that.$store.commit('addPlayUrl',
+                    that.$store.commit('addPlayUrl',
                 {index:that.playingIndex,url:'资源不在了！'});
                     return
                 }
@@ -243,6 +275,18 @@ export default{
             }).catch(function(error){
                 console.log(error)
             })
+        },
+        playProgress(){
+            this.panelProgress = this.dragProgress ? this.dragProgress : this.playProgress
+        }
+    },
+    filters:{
+        formateTime:function(time){
+            var minutes=Math.floor(time / 60);
+            var seconds=Math.floor(time % 60);
+            minutes=('00'+minutes).slice(-2);
+            seconds=('00'+seconds).slice(-2);
+            return minutes + ":" + seconds
         }
     }
 }
@@ -424,6 +468,18 @@ export default{
                         height:10px;
                         background:#fff
                         border-radius:50%
+                    .progressTick
+                        position:absolute
+                        left:-35px
+                        top:0
+                        line-height:10px
+                        font-size:10px
+                    .progressDuration
+                        position:absolute;
+                        right:-35px
+                        top:0
+                        line-height:10px
+                        font-size:10px
                 .panelControlBox
                     height:90px;
                     display:flex;
@@ -432,7 +488,7 @@ export default{
                     span
                         width:45px;
                         height:45px;
-                        border:red 1px solid 
+                        border:transparent 1px solid 
                     .previousBtn
                         background:url('previous_one.png') no-repeat center center
                         background-size:80%;
