@@ -17,32 +17,35 @@
                 <div class="listBtn" @click='isShow=!isShow'></div>
             </template>
       </div>
-      <div class="playSonglistMask" v-if='isShow' @click.self='isShow=!isShow'>
-          <div class="playSonglistPoxBx">
-              <div class='playSonglistTitle'>
-                  <span v-if='playModel==0'></span>
-                  <span>播放列表</span>
-                  <span>共{{playSongList.length}}首</span>
-              </div>
-              <div v-for='(song,index) in playSongList' :key='index' class='songListItemBx'>
-                    <div @click='playSelected(index)' class='songListItem'>
-                        <span v-if='index == playingIndex' class='indexBox'><i></i></span>
-                        <span v-else class='indexBox'>{{index+1}}</span>
-                        <span class='songName'>{{song.musicData.songname}} -</span>
-                        <span class='singerName'>
-                            <span v-for='(singer,idx) in song.musicData.singer' :key='singer.name'>
-                                <span v-if='idx>0'>/</span>
-                                {{singer.name}}
+      <transition>
+        <div class="playSonglistMask" v-if='isShow' @click.self='isShow=!isShow'>
+            <div class="playSonglistPoxBx">
+                <div class='playSonglistTitle'>
+                    <span v-if='playModel==0'></span>
+                    <span>播放列表</span>
+                    <span>共{{playSongList.length}}首</span>
+                </div>
+                <div v-for='(song,index) in playSongList' :key='index' class='songListItemBx'>
+                        <div @click='playSelected(index)' class='songListItem'>
+                            <span v-if='index == playingIndex' class='indexBox'><i></i></span>
+                            <span v-else class='indexBox'>{{index+1}}</span>
+                            <span class='songName'>{{song.musicData.songname}} -</span>
+                            <span class='singerName'>
+                                <span v-for='(singer,idx) in song.musicData.singer' :key='singer.name'>
+                                    <span v-if='idx>0'>/</span>
+                                    {{singer.name}}
+                                </span>
                             </span>
-                        </span>
-                        <span v-if='song.playurl.includes("资源不在")' style='color:red;line-height:45px;padding:0 10px;font-size:12px'>资源不在了！</span>
-                    </div>
-                    <div @click='removeSelect(index)' class='removeBox'>
-                        X
-                    </div>
-              </div>
-          </div>
-      </div>
+                            <span v-if='song.playurl.includes("资源不在")' style='color:red;line-height:45px;padding:0 10px;font-size:12px'>资源不在了！</span>
+                        </div>
+                        <div @click='removeSelect(index)' class='removeBox'>
+                            X
+                        </div>
+                </div>
+            </div>
+        </div>
+    </transition>    
+      
       <div class="playingPanel" v-if='isPanel'>
           <div class="topPart">
                 <div class='comeOut'>

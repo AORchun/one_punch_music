@@ -10,7 +10,7 @@
       <span></span>
       <span></span>
     </div>
-    <span class='info'>loading {{loading}}</span>
+    <span class='info'>loading... {{loading}}</span>
   </div>
 </template>
 <script type='text/ecmascript-6'>
