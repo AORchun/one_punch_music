@@ -43,6 +43,7 @@
               </div>
           </div>
       </div>
+        <div></div>
       <div class="playingPanel" v-if='isPanel'>
           <div class="topPart">
                 <div class='comeOut'>
